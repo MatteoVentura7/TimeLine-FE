@@ -42,7 +42,15 @@ export default function SignInForm() {
       setTimeout(() => navigate('/'), 3000); 
     } catch (error) {
       if (error.response && error.response.status === 400 && error.response.data.error === 'Email già esistente') {
-        setErrorMessage('L\'email fornita è già registrata. Prova con un\'altra o accedi.');
+        setErrorMessage(  <>
+            L'email fornita è già registrata. Prova con un'altra o  
+            <button 
+              className="text-blue-500 underline ml-1 cursor-pointer" 
+              onClick={() => navigate('/')}
+            >
+              accedi
+            </button>.
+          </>);
       } else {
         console.error('Error creating user:', error);
         setErrorMessage('Errore durante la registrazione. Riprova più tardi.');
@@ -52,7 +60,7 @@ export default function SignInForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h1 className="text-2xl font-bold mb-6">Sign In</h1>
+      <h1 className="text-2xl font-bold mb-6">Register</h1>
       {successMessage && (
         <div className="mb-4 p-4 text-green-800 bg-green-200 rounded-md">
           {successMessage}
@@ -104,7 +112,7 @@ export default function SignInForm() {
           type="submit"
           className="cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          Sign In
+          Register
         </button>
       </form>
     </div>
