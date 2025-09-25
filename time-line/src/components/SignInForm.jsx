@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-export default function CreateUserPage() {
+export default function SignInForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState(''); 
@@ -37,7 +37,7 @@ export default function CreateUserPage() {
       const userData = { email, password };
       const response = await axios.post('http://localhost:3000/users', userData);
       console.log('User created successfully:', response.data);
-      setSuccessMessage('User created successfully! Redirecting to login page...'); 
+      setSuccessMessage('Register successfully! Redirecting to login page...'); 
       setErrorMessage(''); 
       setTimeout(() => navigate('/'), 3000); 
     } catch (error) {
@@ -45,7 +45,7 @@ export default function CreateUserPage() {
         setErrorMessage('L\'email fornita è già registrata. Prova con un\'altra o accedi.');
       } else {
         console.error('Error creating user:', error);
-        setErrorMessage('Errore durante la creazione dell\'utente. Riprova più tardi.');
+        setErrorMessage('Errore durante la registrazione. Riprova più tardi.');
       }
     }
   };
