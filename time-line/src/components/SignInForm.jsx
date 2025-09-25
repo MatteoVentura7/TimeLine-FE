@@ -29,10 +29,26 @@ export default function SignInForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match!');
+
+    // Controllo requisiti password
+    if (password.length < 8) {
+      setErrorMessage('La password deve contenere almeno 8 caratteri.');
       return;
     }
+    if (!/[A-Z]/.test(password)) {
+      setErrorMessage('La password deve contenere almeno una lettera maiuscola.');
+      return;
+    }
+    if (!/[0-9]/.test(password)) {
+      setErrorMessage('La password deve contenere almeno un numero.');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setErrorMessage('Le password non corrispondono.');
+      return;
+    }
+
     try {
       const userData = { email, password };
       const response = await axios.post('http://localhost:3000/users', userData);
