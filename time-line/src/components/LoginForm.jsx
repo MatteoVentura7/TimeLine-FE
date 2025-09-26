@@ -18,6 +18,7 @@ export default function LoginForm() {
           type="text"
           id="email"
           name="email"
+          autoComplete="username" // Suggerimento per l'attributo autocomplete
           onChange={(e) => (emailRef.current = e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
@@ -29,6 +30,7 @@ export default function LoginForm() {
           type="password"
           id="password"
           name="password"
+          autoComplete="current-password" // Suggerimento per l'attributo autocomplete
           onChange={(e) => (passwordRef.current = e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"

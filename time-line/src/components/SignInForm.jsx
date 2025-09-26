@@ -41,6 +41,7 @@ export default function SignInForm() {
           <input
             type="email"
             id="email"
+            autoComplete="username" // Suggerimento per l'attributo autocomplete
             onChange={(e) => (emailRef.current = e.target.value)}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -56,6 +57,7 @@ export default function SignInForm() {
           <input
             type="password"
             id="password"
+            autoComplete="new-password"
             onChange={(e) => handlePasswordChange(e.target.value)}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -76,6 +78,7 @@ export default function SignInForm() {
           <input
             type="password"
             id="confirmPassword"
+            autoComplete="new-password"
             onChange={(e) => (confirmPasswordRef.current = e.target.value)}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
