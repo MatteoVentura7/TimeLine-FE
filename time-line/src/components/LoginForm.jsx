@@ -1,34 +1,13 @@
-import axios from 'axios';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useLogin from '../hooks/useLogin';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginResult, setLoginResult] = useState(null);
+  const { emailRef, passwordRef, login } = useLogin();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.post('http://localhost:3000/users/login', {
-        email,
-        password,
-      });
-
-      setLoginResult(response.data.message);
-      alert('Login effettuato con successo!');
-      
-    } catch (error) {
-      if (error.response) {
-        setLoginResult(error.response.data.error);
-        alert('Errore: ' + error.response.data.error);
-      } else {
-        console.error('Errore di rete:', error);
-        alert('Errore di rete. Riprova più tardi.');
-      }
-    }
+    login();
   };
 
   return (
@@ -39,8 +18,7 @@ export default function LoginForm() {
           type="text"
           id="email"
           name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => (emailRef.current = e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
         />
@@ -51,8 +29,7 @@ export default function LoginForm() {
           type="password"
           id="password"
           name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => (passwordRef.current = e.target.value)}
           required
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
         />

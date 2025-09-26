@@ -1,9 +1,11 @@
 {
   "dependencies": {
-    "@tailwindcss/vite": "^4.1.13",
     "axios": "^1.12.2",
     "install": "^0.13.0",
     "routes": "^2.1.0",
     "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.13"
   }
 }
