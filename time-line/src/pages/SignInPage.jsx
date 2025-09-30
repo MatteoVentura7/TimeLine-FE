@@ -1,10 +1,10 @@
 import Layout from "../layout/layout";
-import SignInForm from "../components/SignInForm";
+import SignUpForm from "../components/SignInForm";
 
 export default function SignInPage() {
   return (
     <Layout>
-      <SignInForm />
+      <SignUpForm />
     </Layout>
   );
 }

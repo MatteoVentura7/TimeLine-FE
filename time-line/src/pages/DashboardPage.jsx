@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import { LogoutFunction } from "../utils/LogoutFunction";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Rimuove il token
+    LogoutFunction(); // Usa la funzione di logout
     navigate("/login"); // Reindirizza alla pagina di login
   };
 
