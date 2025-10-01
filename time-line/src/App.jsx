@@ -5,6 +5,7 @@ import DashboardPage from "./pages/DashboardPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
+import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           }
         />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
       </Routes>
     </Layout>
   );
