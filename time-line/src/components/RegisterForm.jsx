@@ -1,6 +1,6 @@
 import useRegister from "../hooks/useRegister";
 
-export default function SignUpForm() {
+export default function RegisterForm() {
   const {
     emailRef,
     passwordRef,
