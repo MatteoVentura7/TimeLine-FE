@@ -1,36 +1,14 @@
-import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { useRef } from "react";
+import { useConfirmEmail } from "../hooks/useConfirmEmail";
 
 export default function ConfirmEmailPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const { message, confirmEmail } = useConfirmEmail();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const token = searchParams.get("token");
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/users/confirm-email",
-        {
-          token,
-          email,
-          password,
-        }
-      );
-      setMessage(response.data.message);
-      setTimeout(() => navigate("/login"), 3000);
-    } catch (error) {
-      if (error.response) {
-        setMessage(error.response.data.error);
-      } else {
-        setMessage("Errore di rete. Riprova più tardi.");
-      }
-    }
+    confirmEmail(emailRef.current.value, passwordRef.current.value);
   };
 
   return (
@@ -48,8 +26,7 @@ export default function ConfirmEmailPage() {
           <input
             type="email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            ref={emailRef}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -64,8 +41,7 @@ export default function ConfirmEmailPage() {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            ref={passwordRef}
             required
             autoComplete="current-password"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
