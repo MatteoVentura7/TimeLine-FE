@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/create-user" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route
           path="/dashboard"
           element={

@@ -24,7 +24,7 @@ export default function LoginForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
         />
       </div>
-      <div className="mb-6">
+      <div className="mb-3">
         <label htmlFor="password" className="block text-gray-700 font-medium mb-2">Password</label>
         <input
           type="password"
@@ -36,6 +36,8 @@ export default function LoginForm() {
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500"
         />
       </div>
+      <div className='mb-3'><a href="" className="text-blue-500 hover:underline" onClick={() => navigate('/forgot-password')}>Forgot Password?</a></div>
+      
       <button
         type="submit"
         className="w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
@@ -49,6 +51,7 @@ export default function LoginForm() {
       >
        Register
       </button>
+    
     </form>
   );
 }
