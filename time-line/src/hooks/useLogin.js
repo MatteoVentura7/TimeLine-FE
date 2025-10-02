@@ -1,11 +1,11 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function useLogin() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
-  const loginResultRef = useRef(null);
+  const [loginResult, setLoginResult] = useState(null);
   const navigate = useNavigate();
 
   const login = () => {
@@ -15,15 +15,18 @@ export default function useLogin() {
         password: passwordRef.current,
       })
       .then((response) => {
-        loginResultRef.current = response.data.message;
+        setLoginResult(response.data.message);
         localStorage.setItem("token", response.data.token); // Salva il token
-        alert("Login effettuato con successo!");
-        navigate("/dashboard"); // Naviga alla pagina dashboard
+
+        setTimeout(() => navigate("/dashboard"), 3000);
       })
       .catch((error) => {
         if (error.response) {
-          loginResultRef.current = error.response.data.error;
-          alert("Errore: " + error.response.data.error);
+          if (error.response.status === 401) {
+            setLoginResult("Credenziali non valide. Riprova.");
+          } else {
+            setLoginResult(error.response.data.error);
+          }
         } else {
           console.error("Errore di rete:", error);
           alert("Errore di rete. Riprova più tardi.");
@@ -31,5 +34,5 @@ export default function useLogin() {
       });
   };
 
-  return { emailRef, passwordRef, loginResultRef, login };
+  return { emailRef, passwordRef, loginResult, login };
 }

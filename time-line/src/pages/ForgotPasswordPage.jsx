@@ -23,7 +23,7 @@ export default function ForgotPasswordPage() {
       })
       .catch((error) => {
         if (error.response) {
-          setMessage("Impossibile inviare il link. Riprova.");
+          setMessage("Utente non trovato con questa email.");
         } else {
           setMessage("Si è verificato un errore. Riprova più tardi.");
         }

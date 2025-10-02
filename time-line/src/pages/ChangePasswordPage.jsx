@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import axios from "axios";
 
 export default function ChangePasswordPage() {
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const passwordRef = useRef(null);
+  const confirmPasswordRef = useRef(null);
   const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
 
@@ -18,20 +18,25 @@ export default function ChangePasswordPage() {
     }
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      try {
-        const response = await axios.put("http://localhost:3000/users/update-password", {
-          token, // Invia il token
-          newPassword: password,
-        });
+    const password = passwordRef.current.value;
+    const confirmPassword = confirmPasswordRef.current.value;
 
-        setMessage(response.data.message || "Password changed successfully");
-      } catch (error) {
-        console.error("Error:", error);
-        setMessage(error.response?.data?.error || "Failed to change password");
-      }
+    if (password === confirmPassword) {
+      (async () => {
+        try {
+          const response = await axios.put("http://localhost:3000/users/update-password", {
+            token, // Invia il token
+            newPassword: password,
+          });
+
+          setMessage(response.data.message || "Password changed successfully");
+        } catch (error) {
+          console.error("Error:", error);
+          setMessage(error.response?.data?.error || "Failed to change password");
+        }
+      })();
     } else {
       setMessage("Passwords do not match");
     }
@@ -52,8 +57,7 @@ export default function ChangePasswordPage() {
           <input
             type="password"
             id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            ref={passwordRef}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -68,8 +72,7 @@ export default function ChangePasswordPage() {
           <input
             type="password"
             id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            ref={confirmPasswordRef}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />

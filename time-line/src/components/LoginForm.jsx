@@ -1,9 +1,20 @@
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLogin from '../hooks/useLogin';
 
 export default function LoginForm() {
-  const { emailRef, passwordRef, login } = useLogin();
+  const { emailRef, passwordRef, login, loginResult } = useLogin();
   const navigate = useNavigate();
+  const [message, setMessage] = useState({ text: "", isError: false });
+
+  useEffect(() => {
+    if (loginResult) {
+      setMessage({
+        text: loginResult,
+        isError: loginResult === "Credenziali non valide. Riprova.",
+      });
+    }
+  }, [loginResult]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,6 +23,15 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit}>
+      {message.text && (
+        <div
+          className={`mb-4 p-2 rounded ${
+            message.isError ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"
+          }`}
+        >
+          {message.text}
+        </div>
+      )}
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 font-medium mb-2">Email</label>
         <input
