@@ -7,15 +7,11 @@ export function useConfirmEmail() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const confirmEmail = (email, password) => {
+  const confirmEmail = () => {
     const token = searchParams.get("token");
 
     axios
-      .post("http://localhost:3000/users/confirm-email", {
-        token,
-        email,
-        password,
-      })
+      .post("http://localhost:3000/users/confirm-email", { token })
       .then((response) => {
         setMessage(response.data.message);
         setTimeout(() => navigate("/login"), 3000);
