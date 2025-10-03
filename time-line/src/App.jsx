@@ -26,7 +26,7 @@ export default function App() {
           }
         />
         <Route
-          path="/admin-dashboard"
+          path="/admin"
           element={
             <AdminProtectedRoute>
               <AdminDashboard />
