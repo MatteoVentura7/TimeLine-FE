@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
 
 export default function LoginPage() {
-  const { emailRef, passwordRef, login, loginResult } = useLogin();
+  const { emailRef, passwordRef, login, loginResult, isLoading } = useLogin();
   const navigate = useNavigate();
   const [message, setMessage] = useState({ text: "", isError: false });
 
@@ -77,9 +77,12 @@ export default function LoginPage() {
 
       <button
         type="submit"
-        className="w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 cursor-pointer"
+        className={`w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+          isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+        }`}
+        disabled={isLoading}
       >
-        Login
+        {isLoading ? "Loading..." : "Login"}
       </button>
       <button
         type="button"

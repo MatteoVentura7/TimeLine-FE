@@ -10,6 +10,7 @@ export default function RegisterPage() {
     passwordValidationMessage,
     handlePasswordChange,
     register,
+    isLoading, // Importa lo stato di caricamento
   } = useRegister();
 
   const handleSubmit = (e) => {
@@ -86,9 +87,13 @@ export default function RegisterPage() {
         </div>
         <button
           type="submit"
-          className="cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className={`cursor-pointer w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+            isLoading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          disabled={isLoading} // Disabilita il pulsante durante il caricamento
         >
-          Register
+          {isLoading ? "Loading..." : "Register"}{" "}
+          {/* Mostra "Loading..." durante il caricamento */}
         </button>
       </form>
     </div>
