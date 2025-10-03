@@ -7,6 +7,8 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
+import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 
 export default function App() {
   return (
@@ -21,6 +23,14 @@ export default function App() {
             <ProtectedRoute>
               <DashboardPage />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin-dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
           }
         />
         <Route path="/login" element={<LoginPage />} />
