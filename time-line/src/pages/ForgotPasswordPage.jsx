@@ -1,37 +1,11 @@
-import { useRef, useState } from "react";
-import axios from "axios";
+import { useRef } from "react";
+import useForgotPassword from "../hooks/useForgotPassword";
 
 export default function ForgotPasswordPage() {
-  const emailRef = useRef(null);
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setMessage("");
-
-    // Validazione dell'email
-    const email = emailRef.current.value;
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setMessage("Inserisci un'email valida.");
-      return;
-    }
-
-    axios
-      .post("http://localhost:3000/users/reset-password", { email })
-      .then((response) => {
-        setMessage("Un link per il reset è stato inviato alla tua email.");
-      })
-      .catch((error) => {
-        if (error.response) {
-          setMessage("Utente non trovato con questa email.");
-        } else {
-          setMessage("Si è verificato un errore. Riprova più tardi.");
-        }
-      });
-  };
+  const { emailRef, message, handleForgotPassword } = useForgotPassword();
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleForgotPassword}>
       <h1 className="text-2xl font-bold mb-6">Reset Password</h1>
       <div className="mb-4">
         <label htmlFor="email" className="block text-gray-700 font-medium mb-2">
