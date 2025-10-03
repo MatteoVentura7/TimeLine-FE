@@ -7,8 +7,8 @@ import RegisterPage from "./pages/RegisterPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
-import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import AdminProtectedRoute from "./components/AdminProtectedRoute.jsx";
 
 export default function App() {
   return (

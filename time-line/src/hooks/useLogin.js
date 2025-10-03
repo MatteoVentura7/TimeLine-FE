@@ -22,6 +22,7 @@ export default function useLogin() {
       .then((response) => {
         setLoginResult(response.data.message);
         localStorage.setItem("token", response.data.token); // Salva il token
+        localStorage.setItem("IsAdmin", response.data.IsAdmin.toString()); // Salva il ruolo
 
         setTimeout(() => {
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
