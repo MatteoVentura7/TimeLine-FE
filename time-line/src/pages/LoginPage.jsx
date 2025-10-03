@@ -77,20 +77,16 @@ export default function LoginPage() {
 
       <button
         type="submit"
-        className={`w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+        className={` mb-2 w-full bg-amber-500 text-white py-2 px-4 rounded-md hover:bg-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 ${
           isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
         }`}
         disabled={isLoading}
       >
         {isLoading ? "Loading..." : "Login"}
       </button>
-      <button
-        type="button"
-        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer mt-4"
-        onClick={() => navigate("/create-user")}
-      >
-        Register
-      </button>
+      <a href="/create-user" className="text-blue-500 hover:underline ">
+        Don't have an account? Sign up!
+      </a>
     </form>
   );
 }

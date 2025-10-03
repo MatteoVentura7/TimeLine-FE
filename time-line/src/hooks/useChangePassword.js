@@ -14,7 +14,7 @@ export default function useChangePassword() {
     if (tokenFromUrl) {
       setToken(tokenFromUrl);
     } else {
-      setMessage("Token non valido o mancante.");
+      setMessage("Token not valid");
     }
   }, []);
 

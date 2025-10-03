@@ -31,13 +31,13 @@ export default function useLogin() {
       .catch((error) => {
         if (error.response) {
           if (error.response.status === 401) {
-            setLoginResult("Credenziali non valide. Riprova.");
+            setLoginResult("Invalid credentials. Please try again.");
           } else {
             setLoginResult(error.response.data.error);
           }
         } else {
-          console.error("Errore di rete:", error);
-          alert("Errore di rete. Riprova più tardi.");
+          console.error("Network error:", error);
+          alert("Network error. Please try again later.");
         }
         setIsLoading(false); // Reimposta lo stato di caricamento in caso di errore
       });

@@ -13,14 +13,14 @@ export function useConfirmEmail() {
     axios
       .post("http://localhost:3000/users/confirm-email", { token })
       .then((response) => {
-        setMessage(response.data.message);
+        setMessage("Email confirmed successfully! Redirecting to login page...");
         setTimeout(() => navigate("/login"), 3000);
       })
       .catch((error) => {
         if (error.response) {
           setMessage(error.response.data.error);
         } else {
-          setMessage("Errore di rete. Riprova più tardi.");
+          setMessage("Network error. Please try again later.");
         }
       });
   };

@@ -15,13 +15,13 @@ export default function useRegister() {
 
   const validatePassword = (password) => {
     if (password.length < 8) {
-      return "La password deve contenere almeno 8 caratteri.";
+      return "the password must be at least 8 characters long.";
     }
     if (!/[A-Z]/.test(password)) {
-      return "La password deve contenere almeno una lettera maiuscola.";
+      return "the password must contain at least one uppercase letter.";
     }
     if (!/[0-9]/.test(password)) {
-      return "La password deve contenere almeno un numero.";
+      return "the password must contain at least one number.";
     }
     return "";
   };
@@ -59,7 +59,7 @@ export default function useRegister() {
       .then((response) => {
         console.log("User created successfully:", response.data);
         setSuccessMessage(
-          "Register successfully! Redirecting to login page..."
+          "Registration successful! Redirecting to the login page..."
         );
         setErrorMessage("");
         setTimeout(() => {
@@ -73,12 +73,10 @@ export default function useRegister() {
           error.response.status === 400 &&
           error.response.data.error === "Email già esistente"
         ) {
-          setErrorMessage("L'email fornita è già registrata.");
+          setErrorMessage("The provided email is already registered.");
         } else {
           console.error("Error creating user:", error);
-          setErrorMessage(
-            "Errore durante la registrazione. Riprova più tardi."
-          );
+          setErrorMessage("Error during registration. Please try again later.");
         }
         setIsLoading(false); // Reimposta lo stato di caricamento in caso di errore
       });

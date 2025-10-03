@@ -20,13 +20,13 @@ export default function useForgotPassword() {
         "http://localhost:3000/users/reset-password",
         { email }
       );
-      setMessage("Un link per il reset è stato inviato alla tua email.");
+      setMessage("Password reset link sent! Check your email.");
       return { success: true };
     } catch (error) {
       if (error.response) {
-        setMessage("Utente non trovato con questa email.");
+        setMessage("User not found with this email.");
       } else {
-        setMessage("Si è verificato un errore. Riprova più tardi.");
+        setMessage("An error occurred. Please try again later.");
       }
       return { success: false };
     }
