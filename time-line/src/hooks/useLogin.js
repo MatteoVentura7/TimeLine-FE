@@ -23,10 +23,10 @@ export default function useLogin() {
         setLoginResult(response.data.message);
         localStorage.setItem("token", response.data.token); // Salva il token
 
-        setTimeout(() => {
+      
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
           navigate("/dashboard");
-        }, 2000);
+        
       })
       .catch((error) => {
         if (error.response) {
