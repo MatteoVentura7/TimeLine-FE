@@ -1,12 +1,23 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 
-function ProtectedRoute({ children }) {
-  const token = localStorage.getItem('token');
+function ProtectedRoute({ children, requireToken }) {
+  const location = useLocation();
+  if (requireToken) {
+    const searchParams = new URLSearchParams(location.search);
+    const token = searchParams.get('token');
 
-  if (!token) {
-    return <Navigate to="/" replace />;
+    if (!token) {
+      return <Navigate to="/" replace />;
+    }
+  } else {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return <Navigate to="/" replace />;
+    }
   }
-    return children;
+
+  return children;
 }
 
 export default ProtectedRoute;

@@ -24,10 +24,22 @@ export default function App() {
           }
         />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
-        <Route path="/reset-password" element={
-            <ChangePasswordPage /> 
-        } />
+        <Route
+          path="/confirm-email"
+          element={
+            <ProtectedRoute requireToken={true}>
+              <ConfirmEmailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reset-password"
+          element={
+            <ProtectedRoute requireToken={true}>
+              <ChangePasswordPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Layout>
   );
