@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function useChangePassword() {
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
+  const navigate = useNavigate();
 
   // Leggi il token dalla query string
   useEffect(() => {
@@ -34,6 +36,7 @@ export default function useChangePassword() {
         );
 
         setMessage(response.data.message || "Password changed successfully");
+        navigate("/login"); // Redirect to login page
       } catch (error) {
         console.error("Error:", error);
         setMessage(error.response?.data?.error || "Failed to change password");

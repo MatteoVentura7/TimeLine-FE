@@ -6,7 +6,7 @@ export default function ChangePasswordPage() {
   return (
     <div className="max-w-md mx-auto mt-10">
       <h1 className="text-2xl font-bold mb-6">Change Password</h1>
-      {message && <p className="mb-4 text-center text-gray-700">{message}</p>}
+      {message && <p className="mb-4 text-center text-red-700 bg-red-100 p-2 rounded">{message}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label

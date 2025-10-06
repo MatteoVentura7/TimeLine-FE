@@ -11,7 +11,8 @@ export default function LoginPage() {
     if (loginResult) {
       setMessage({
         text: loginResult,
-        isError: loginResult === "Credenziali non valide. Riprova.",
+        isError:
+          loginResult === "Invalid credentials. Please try again.",
       });
     }
   }, [loginResult]);
@@ -25,10 +26,9 @@ export default function LoginPage() {
     <form onSubmit={handleSubmit}>
       {message.text && (
         <div
-          className={`mb-4 p-2 rounded ${
+          className={`mb-4 p-2 rounded bg-red-100 text-red-700 ${
             message.isError
-              ? "bg-red-100 text-red-700"
-              : "bg-green-100 text-green-700"
+             
           }`}
         >
           {message.text}

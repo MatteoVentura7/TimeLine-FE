@@ -25,8 +25,11 @@ export default function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/confirm-email" element={<ConfirmEmailPage />} />
-        <Route path="/reset-password" element={<ChangePasswordPage />} />
+        <Route path="/reset-password" element={
+            <ChangePasswordPage /> 
+        } />
       </Routes>
     </Layout>
   );
 }
+

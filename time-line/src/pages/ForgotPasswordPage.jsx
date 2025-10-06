@@ -51,7 +51,15 @@ export default function ForgotPasswordPage() {
       >
         {isButtonDisabled ? `Resend in ${timer}s` : "Send Reset Link"}
       </button>
-      {message && <p className="mt-4 text-center text-gray-700">{message}</p>}
+      {message && (
+        <p
+          className={`mt-4 text-center ${
+            message.includes("link") ? "text-green-700 bg-green-100 mb-4 p-2 rounded" : "text-red-700 bg-red-100 mb-4 p-2 rounded"
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </form>
   );
 }

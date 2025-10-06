@@ -49,7 +49,7 @@ export default function useRegister() {
     }
 
     if (password !== confirmPassword) {
-      setErrorMessage("Le password non corrispondono.");
+      setErrorMessage("The passwords do not match.");
       setIsLoading(false); // Reimposta lo stato di caricamento
       return;
     }
@@ -65,7 +65,7 @@ export default function useRegister() {
         setTimeout(() => {
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
           navigate("/");
-        }, 3000);
+        }, 1000);
       })
       .catch((error) => {
         if (
