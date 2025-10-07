@@ -11,7 +11,7 @@ export default function ResetPasswordPage() {
   } = useResetPassword();
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="text-red-700 text-center font-bold bg-red-100 mb-4 p-2 rounded">{error}</div>;
   }
 
   if (!tokenValid) {

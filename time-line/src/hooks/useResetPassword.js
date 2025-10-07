@@ -18,7 +18,7 @@ export function useResetPassword() {
     axios
       .get(`http://localhost:3000/users/verify-reset-token?token=${token}`)
       .then(() => setTokenValid(true))
-      .catch(() => navigate("/"));
+      .catch(() => setError("The request is no longer valid or has expired."));
   }, [token]);
 
   const handleSubmit = (e) => {
