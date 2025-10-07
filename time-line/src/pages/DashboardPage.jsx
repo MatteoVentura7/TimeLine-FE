@@ -106,13 +106,13 @@ export default function DashboardPage() {
                       onClick={() => handleEdit(user.id)}
                       className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
                     >
-                      Edit
+                     <i class="fa-solid fa-pencil"></i> Edit
                     </button>
                     <button
                       onClick={() => confirmDelete(user.id)}
                       className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                     >
-                      Delete
+                     <i class="fa-solid fa-trash"></i> Delete
                     </button>
                   </td>
                 </tr>
