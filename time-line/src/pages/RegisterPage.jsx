@@ -1,4 +1,5 @@
 import useRegister from "../hooks/useRegister";
+import Layout from "../layout/layout";
 
 export default function RegisterPage() {
   const {
@@ -19,6 +20,8 @@ export default function RegisterPage() {
   };
 
   return (
+    <div>
+      <Layout>
     <div className="max-w-md mx-auto mt-10">
       <h1 className="text-2xl font-bold mb-6">Register</h1>
       {successMessage && (
@@ -96,6 +99,8 @@ export default function RegisterPage() {
           {/* Mostra "Loading..." durante il caricamento */}
         </button>
       </form>
+    </div>
+    </Layout>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useConfirmEmail } from "../hooks/useConfirmEmail";
 import PropagateLoader from "react-spinners/PropagateLoader";
+import Layout from "../layout/layout";
 
 export default function ConfirmEmailPage() {
   const { message, confirmEmail, tokenValid, error } = useConfirmEmail();
@@ -18,8 +19,12 @@ export default function ConfirmEmailPage() {
   }
 
   return (
+    <div>
+      <Layout>
     <div className="max-w-md mx-auto mt-10 mb-10">
       <p className="flex justify-center"><PropagateLoader /></p>
+    </div>
+    </Layout>
     </div>
   );
 }

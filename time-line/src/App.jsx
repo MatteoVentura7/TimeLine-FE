@@ -1,4 +1,4 @@
-import Layout from "./layout/layout";
+
 import LoginPage from "./pages/LoginPage";
 import { Routes, Route } from "react-router-dom";
 import DashboardPage from "./pages/DashboardPage.jsx";
@@ -11,7 +11,7 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 export default function App() {
   return (
-    <Layout>
+  
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/create-user" element={<RegisterPage />} />
@@ -29,7 +29,7 @@ export default function App() {
         <Route path="/confirm-email" element={<ConfirmEmailPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
-    </Layout>
+ 
   );
 }
 

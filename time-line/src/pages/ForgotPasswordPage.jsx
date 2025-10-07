@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import useForgotPassword from "../hooks/useForgotPassword";
+import Layout from "../layout/layout";
 
 export default function ForgotPasswordPage() {
   const { emailRef, message, handleForgotPassword } = useForgotPassword();
@@ -28,6 +29,8 @@ export default function ForgotPasswordPage() {
   };
 
   return (
+    <div>
+      <Layout>
     <form onSubmit={handleSubmit}>
       <h1 className="text-2xl font-bold mb-6">Reset Password</h1>
       <div className="mb-4">
@@ -61,5 +64,7 @@ export default function ForgotPasswordPage() {
         </p>
       )}
     </form>
+    </Layout>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useResetPassword } from "../hooks/useResetPassword";
+import Layout from "../layout/layout";
 
 export default function ResetPasswordPage() {
   const {
@@ -19,6 +20,8 @@ export default function ResetPasswordPage() {
   }
 
   return (
+    <div>
+      <Layout>
     <div className="max-w-md mx-auto mt-10">
          <h1 className="text-2xl font-bold mb-6">Change Password</h1>
       {message && <p className="mb-4 text-center text-red-700 bg-red-100 p-2 rounded">{message}</p>}
@@ -55,6 +58,8 @@ export default function ResetPasswordPage() {
         Update Password
       </button>
     </form>
+    </div>
+    </Layout>
     </div>
   );
 }

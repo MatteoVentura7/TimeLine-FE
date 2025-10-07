@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
+import Layout from "../layout/layout";
 
 export default function LoginPage() {
   const { emailRef, passwordRef, login, loginResult, isLoading } = useLogin();
@@ -23,6 +24,8 @@ export default function LoginPage() {
   };
 
   return (
+    <div>
+      <Layout>
     <form onSubmit={handleSubmit}>
       {message.text && (
         <div
@@ -88,5 +91,7 @@ export default function LoginPage() {
         Don't have an account? Sign up!
       </a>
     </form>
+    </Layout>
+    </div>
   );
 }
