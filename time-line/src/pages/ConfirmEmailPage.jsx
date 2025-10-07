@@ -1,12 +1,24 @@
+
 import { useConfirmEmail } from "../hooks/useConfirmEmail";
 
 export default function ConfirmEmailPage() {
-  const { message, confirmEmail } = useConfirmEmail();
+  const { message, confirmEmail, tokenValid, error } = useConfirmEmail();
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!tokenValid) {
+    return <div>Verifica del token in corso...</div>;
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("Submitting email confirmation..."); // Debug log
     confirmEmail();
   };
+
+
 
   return (
     <div className="max-w-md mx-auto mt-10">

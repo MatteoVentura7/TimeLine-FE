@@ -6,7 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
-import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
+
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 export default function App() {
   return (
@@ -23,23 +24,10 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+        
         <Route path="/login" element={<LoginPage />} />
-        <Route
-          path="/confirm-email"
-          element={
-            <ProtectedRoute requireToken={true}>
-              <ConfirmEmailPage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/reset-password"
-          element={
-            <ProtectedRoute requireToken={true}>
-              <ChangePasswordPage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Routes>
     </Layout>
   );
