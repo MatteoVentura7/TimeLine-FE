@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useDeleteUser } from "../hooks/useDeleteUser";
+import { Navigate } from "react-router-dom";
 
 
 export default function DashboardPage() {
@@ -10,6 +11,8 @@ export default function DashboardPage() {
   const [users, setUsers] = useState([]);
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
+  const [editingUser, setEditingUser] = useState(null);
+  const [editedEmail, setEditedEmail] = useState("");
 
 
   useEffect(() => {
@@ -32,9 +35,33 @@ export default function DashboardPage() {
     navigate("/create-user"); // Reindirizza alla pagina di creazione utente
   };
 
-  const handleEdit = (userId) => {
-    console.log("Edit user with ID:", userId);
-    // Implementa la logica di modifica qui
+  const handleEdit = (userId, currentEmail) => {
+    setEditingUser(userId);
+    setEditedEmail(currentEmail);
+  };
+
+  const handleSave = async () => {
+    if (!editingUser) return;
+
+    try {
+      await axios.put(`http://localhost:3000/users/update-email/${editingUser}`, {
+        email: editedEmail,
+      });
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === editingUser ? { ...user, email: editedEmail } : user
+        )
+      );
+      setEditingUser(null);
+      setEditedEmail("");
+    } catch (error) {
+      console.error("Error updating email:", error);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingUser(null);
+    setEditedEmail("");
   };
 
   const confirmDelete = (userId) => {
@@ -97,21 +124,56 @@ export default function DashboardPage() {
               {users.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-100">
                   <td className="px-4 py-2 border border-gray-300">{user.id}</td>
-                  <td className="px-4 py-2 border border-gray-300">{user.email}</td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {editingUser === user.id ? (
+                         
+                      <input
+                       type="text"
+                        id="email"
+                        name="email"
+                        required
+                        value={editedEmail}
+                        onChange={(e) => setEditedEmail(e.target.value)}
+                        className="border border-gray-300 rounded-md px-2 py-1"
+                      />
+                   
+                    ) : (
+                      user.email
+                    )}
+                  </td>
                   <td className="px-4 py-2 border border-gray-300">
                     <div className="flex justify-end">
+                      {editingUser === user.id ? (
+                        <>
                           <button
-                      onClick={() => handleEdit(user.id)}
-                      className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
-                    >
-                     <i class="fa-solid fa-pencil"></i> Edit
-                    </button>
-                    <button
-                      onClick={() => confirmDelete(user.id)}
-                      className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                    >
-                     <i class="fa-solid fa-trash"></i> Delete
-                    </button>
+                            onClick={handleSave}
+                            className="bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={handleCancelEdit}
+                            className="bg-gray-300 text-black py-1 px-3 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => handleEdit(user.id, user.email)}
+                            className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
+                          >
+                            <i className="fa-solid fa-pencil"></i> Edit
+                          </button>
+                          <button
+                            onClick={() => confirmDelete(user.id)}
+                            className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                          >
+                            <i className="fa-solid fa-trash"></i> Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                 
                   </td>

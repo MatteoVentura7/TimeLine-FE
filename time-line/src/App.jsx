@@ -6,7 +6,6 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
-
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 export default function App() {
@@ -28,7 +27,6 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-        
         <Route path="/login" element={<LoginPage />} />
         <Route path="/confirm-email" element={<ConfirmEmailPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
