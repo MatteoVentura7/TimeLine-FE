@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useConfirmEmail } from "../hooks/useConfirmEmail";
 import PropagateLoader from "react-spinners/PropagateLoader";
 import Layout from "../layout/layout";
+import { useNavigate } from "react-router-dom";
 
 export default function ConfirmEmailPage() {
   const { message, confirmEmail, tokenValid, error } = useConfirmEmail();
+  const navigate = useNavigate();
 
   useEffect(() => {
     confirmEmail();
@@ -27,6 +29,15 @@ export default function ConfirmEmailPage() {
           </p>
         </div>
       )}
+    <div className="flex justify-center">
+      <button
+        onClick={() => navigate(-1)}
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Torna indietro
+      </button>
+    </div>
+      
     </Layout>
   );
 }
