@@ -64,7 +64,7 @@ export default function useRegister() {
         setErrorMessage("");
         setTimeout(() => {
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
-          navigate("/");
+          navigate("/dashboard");
         }, 1000);
       })
       .catch((error) => {

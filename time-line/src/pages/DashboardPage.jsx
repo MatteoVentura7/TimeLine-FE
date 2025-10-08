@@ -2,12 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogoutFunction } from "../components/LogoutFunction";
+import { useDeleteUser } from "../hooks/useDeleteUser";
 
 
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [popup, setPopup] = useState({ visible: false, userId: null });
+  const { deleteUser, isDeleting } = useDeleteUser();
 
 
   useEffect(() => {
@@ -41,18 +43,11 @@ export default function DashboardPage() {
 
   const handleDelete = async () => {
     const { userId } = popup;
-    try {
-      const response = await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) throw new Error("Errore nella cancellazione utente");
-      // Aggiorna la lista degli utenti dopo l'eliminazione
+    const success = await deleteUser(userId);
+    if (success) {
       setUsers(users.filter((user) => user.id !== userId));
-    } catch (error) {
-      console.error("Errore:", error);
-    } finally {
-      setPopup({ visible: false, userId: null });
     }
+    setPopup({ visible: false, userId: null });
   };
 
   const closePopup = () => {
@@ -80,12 +75,14 @@ export default function DashboardPage() {
 
       <main className="container mx-auto py-8 px-4">
         <h2 className="text-xl font-semibold mb-4">User List</h2>
-        <button
+        <div className="flex justify-end">  
+          <button
           onClick={handleCreateUser}
           className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
         >
           Create New User
-        </button>
+        </button></div>
+      
 
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="min-w-full table-auto border-collapse border border-gray-300">
@@ -102,7 +99,8 @@ export default function DashboardPage() {
                   <td className="px-4 py-2 border border-gray-300">{user.id}</td>
                   <td className="px-4 py-2 border border-gray-300">{user.email}</td>
                   <td className="px-4 py-2 border border-gray-300">
-                    <button
+                    <div className="flex justify-end">
+                          <button
                       onClick={() => handleEdit(user.id)}
                       className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
                     >
@@ -114,6 +112,8 @@ export default function DashboardPage() {
                     >
                      <i class="fa-solid fa-trash"></i> Delete
                     </button>
+                    </div>
+                
                   </td>
                 </tr>
               ))}
