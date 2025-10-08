@@ -10,21 +10,23 @@ export default function ConfirmEmailPage() {
     confirmEmail();
   }, [confirmEmail]);
 
-  if (error) {
-    return <div className="text-red-700 text-center font-bold bg-red-100 mb-4 p-2 rounded">{error}</div>;
-  }
-
-  if (!tokenValid) {
-    return <div>Verifica del token in corso...</div>;
-  }
-
   return (
-    <div>
-      <Layout>
-    <div className="max-w-md mx-auto mt-10 mb-10">
-      <p className="flex justify-center"><PropagateLoader /></p>
-    </div>
+    <Layout>
+      {error && (
+        <div className="text-red-700 text-center font-bold bg-red-100 mb-4 p-2 rounded">
+          {error}
+        </div>
+      )}
+
+      {!error && !tokenValid && <div>Verifica del token in corso...</div>}
+
+      {!error && tokenValid && (
+        <div className="max-w-md mx-auto mt-10 mb-10">
+          <p className="flex justify-center">
+            <PropagateLoader />
+          </p>
+        </div>
+      )}
     </Layout>
-    </div>
   );
 }

@@ -125,19 +125,19 @@ export default function DashboardPage() {
       {popup.visible && (
         <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-md text-center">
-            <p className="mb-4">Sei sicuro di voler eliminare questo utente?</p>
+            <p className="mb-4">Are you sure you want to delete this user?</p>
             <div className="flex justify-center space-x-4">
               <button
                 onClick={handleDelete}
                 className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
               >
-                Conferma
+                Confirm
               </button>
               <button
                 onClick={closePopup}
                 className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
               >
-                Annulla
+                Cancel
               </button>
             </div>
           </div>

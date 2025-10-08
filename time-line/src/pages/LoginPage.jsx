@@ -87,9 +87,7 @@ export default function LoginPage() {
       >
         {isLoading ? "Loading..." : "Login"}
       </button>
-      <a href="/create-user" className="text-blue-500 hover:underline ">
-        Don't have an account? Sign up!
-      </a>
+      
     </form>
     </Layout>
     </div>

@@ -59,7 +59,7 @@ export default function useRegister() {
       .then((response) => {
         console.log("User created successfully:", response.data);
         setSuccessMessage(
-          "Registration successful! Redirecting to the login page..."
+          "Registration successful! Redirecting to the dashboard..."
         );
         setErrorMessage("");
         setTimeout(() => {

@@ -14,7 +14,11 @@ export default function App() {
   
       <Routes>
         <Route path="/" element={<LoginPage />} />
-        <Route path="/create-user" element={<RegisterPage />} />
+        <Route path="/create-user" element={
+          <ProtectedRoute>
+              <RegisterPage />
+            </ProtectedRoute>
+        } />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         <Route
           path="/dashboard"
