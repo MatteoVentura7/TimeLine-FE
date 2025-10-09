@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useDeleteUser } from "../hooks/useDeleteUser";
-import { Navigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -49,8 +48,18 @@ export default function DashboardPage() {
     setEditedEmail(currentEmail);
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSave = async () => {
     if (!editingUser) return;
+
+    if (!validateEmail(editedEmail)) {
+      setStatusMessage({ type: "error", text: "Insert a valid email." });
+      return;
+    }
 
     try {
       const response = await axios.put(
@@ -96,6 +105,11 @@ export default function DashboardPage() {
 
   const closePopup = () => {
     setPopup({ visible: false, userId: null });
+  };
+
+  const handleEmailChange = (e) => {
+    setEditedEmail(e.target.value);
+    setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
   };
 
   return (
@@ -165,7 +179,7 @@ export default function DashboardPage() {
                         name="email"
                         required
                         value={editedEmail}
-                        onChange={(e) => setEditedEmail(e.target.value)}
+                        onChange={handleEmailChange}
                         className="border border-gray-300 rounded-md px-2 py-1"
                       />
                     ) : (
