@@ -5,7 +5,6 @@ import { LogoutFunction } from "../components/LogoutFunction";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import { Navigate } from "react-router-dom";
 
-
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -13,7 +12,7 @@ export default function DashboardPage() {
   const { deleteUser, isDeleting } = useDeleteUser();
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState("");
-
+  const [statusMessage, setStatusMessage] = useState(null);
 
   useEffect(() => {
     axios
@@ -25,6 +24,16 @@ export default function DashboardPage() {
         console.error("Error fetching users:", error);
       });
   }, []);
+
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => {
+        setStatusMessage(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
 
   const handleLogout = () => {
     LogoutFunction(); // Usa la funzione di logout
@@ -44,9 +53,12 @@ export default function DashboardPage() {
     if (!editingUser) return;
 
     try {
-      await axios.put(`http://localhost:3000/users/update-email/${editingUser}`, {
-        email: editedEmail,
-      });
+      const response = await axios.put(
+        `http://localhost:3000/users/update-email/${editingUser}`,
+        {
+          email: editedEmail,
+        }
+      );
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === editingUser ? { ...user, email: editedEmail } : user
@@ -54,8 +66,13 @@ export default function DashboardPage() {
       );
       setEditingUser(null);
       setEditedEmail("");
+      setStatusMessage({ type: "success", text: response.data.message });
     } catch (error) {
-      console.error("Error updating email:", error);
+      if (error.response) {
+        setStatusMessage({ type: "error", text: error.response.data.error });
+      } else {
+        setStatusMessage({ type: "error", text: "Errore imprevisto." });
+      }
     }
   };
 
@@ -81,8 +98,6 @@ export default function DashboardPage() {
     setPopup({ visible: false, userId: null });
   };
 
-  
-
   return (
     <div className="min-h-screen bg-gray-100 relative">
       <header className=" text-black py-4 shadow-md">
@@ -102,33 +117,50 @@ export default function DashboardPage() {
 
       <main className="container mx-auto py-8 px-4">
         <h2 className="text-xl font-semibold mb-4">User List</h2>
-        <div className="flex justify-end">  
+        {statusMessage && (
+          <div
+            className={`fixed top-50 left-52 w-fit p-2 rounded-md shadow-md text-white z-50 ${
+              statusMessage.type === "success" ? "bg-green-500" : "bg-red-500"
+            }`}
+          >
+            {statusMessage.text}
+          </div>
+        )}
+
+        <div className="flex justify-end items-center ">
           <button
-          onClick={handleCreateUser}
-          className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
-        >
-          Create New User
-        </button></div>
-      
+            onClick={handleCreateUser}
+            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
+          >
+            Create New User
+          </button>
+        </div>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead className="bg-gray-200">
               <tr>
-                <th className="px-4 py-2 border border-gray-300 text-left">ID</th>
-                <th className="px-4 py-2 border border-gray-300 text-left">Email</th>
-                <th className="px-4 py-2 border border-gray-300 text-left">Actions</th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
+                  ID
+                </th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
+                  Email
+                </th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user.id} className="hover:bg-gray-100">
-                  <td className="px-4 py-2 border border-gray-300">{user.id}</td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {user.id}
+                  </td>
                   <td className="px-4 py-2 border border-gray-300">
                     {editingUser === user.id ? (
-                         
                       <input
-                       type="text"
+                        type="email"
                         id="email"
                         name="email"
                         required
@@ -136,7 +168,6 @@ export default function DashboardPage() {
                         onChange={(e) => setEditedEmail(e.target.value)}
                         className="border border-gray-300 rounded-md px-2 py-1"
                       />
-                   
                     ) : (
                       user.email
                     )}
@@ -175,7 +206,6 @@ export default function DashboardPage() {
                         </>
                       )}
                     </div>
-                
                   </td>
                 </tr>
               ))}
@@ -205,9 +235,6 @@ export default function DashboardPage() {
           </div>
         </div>
       )}
-
-      
-              
     </div>
   );
 }
