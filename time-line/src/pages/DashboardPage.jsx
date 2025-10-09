@@ -122,11 +122,30 @@ export default function DashboardPage() {
     setPasswordPopup({ visible: true, userId });
   };
 
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "The password must be at least 8 characters long.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "The password must contain at least one uppercase letter.";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "The password must contain at least one number.";
+    }
+    return "";
+  };
+
   const handleSavePassword = async () => {
     const { userId } = passwordPopup;
 
+    const validationMessage = validatePassword(newPassword);
+    if (validationMessage) {
+      setStatusMessage({ type: "error", text: validationMessage });
+      return;
+    }
+
     if (newPassword !== confirmPassword) {
-      setStatusMessage({ type: "error", text: "Le password non coincidono." });
+      setStatusMessage({ type: "error", text: "Passwords do not match." });
       return;
     }
 
@@ -305,35 +324,44 @@ export default function DashboardPage() {
       {passwordPopup.visible && (
         <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
           <div className="bg-white p-6 rounded shadow-md text-center">
-            <h3 className="mb-4 text-lg font-semibold">Cambia Password</h3>
-            <input
-              type="password"
-              placeholder="Nuova Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-            />
-            <input
-              type="password"
-              placeholder="Conferma Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-            />
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={handleSavePassword}
-                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-              >
-                Salva
-              </button>
-              <button
-                onClick={closePasswordPopup}
-                className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              >
-                Annulla
-              </button>
-            </div>
+            <h3 className="mb-4 text-lg font-semibold">Change Password</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); // Impedisce l'invio del form
+                handleSavePassword(); // Chiama la funzione per salvare la password
+              }}
+            >
+              <input
+                type="password"
+                placeholder="New Password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+              />
+              <div className="flex justify-center space-x-4">
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={closePasswordPopup}
+                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
