@@ -12,6 +12,12 @@ export default function DashboardPage() {
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState("");
   const [statusMessage, setStatusMessage] = useState(null);
+  const [passwordPopup, setPasswordPopup] = useState({
+    visible: false,
+    userId: null,
+  });
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     axios
@@ -110,6 +116,46 @@ export default function DashboardPage() {
   const handleEmailChange = (e) => {
     setEditedEmail(e.target.value);
     setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
+  };
+
+  const handleChangePassword = (userId) => {
+    setPasswordPopup({ visible: true, userId });
+  };
+
+  const handleSavePassword = async () => {
+    const { userId } = passwordPopup;
+
+    if (newPassword !== confirmPassword) {
+      setStatusMessage({ type: "error", text: "Le password non coincidono." });
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/users/change-password/${userId}`,
+        {
+          newPassword,
+          confirmPassword,
+          id: userId,
+        }
+      );
+      setStatusMessage({ type: "success", text: response.data.message });
+      setPasswordPopup({ visible: false, userId: null });
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      if (error.response) {
+        setStatusMessage({ type: "error", text: error.response.data.error });
+      } else {
+        setStatusMessage({ type: "error", text: "Errore imprevisto." });
+      }
+    }
+  };
+
+  const closePasswordPopup = () => {
+    setPasswordPopup({ visible: false, userId: null });
+    setNewPassword("");
+    setConfirmPassword("");
   };
 
   return (
@@ -212,6 +258,12 @@ export default function DashboardPage() {
                             <i className="fa-solid fa-pencil"></i> Edit
                           </button>
                           <button
+                            onClick={() => handleChangePassword(user.id)}
+                            className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
+                          >
+                            <i className="fa-solid fa-key"></i> Change Password
+                          </button>
+                          <button
                             onClick={() => confirmDelete(user.id)}
                             className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
                           >
@@ -244,6 +296,42 @@ export default function DashboardPage() {
                 className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
               >
                 Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {passwordPopup.visible && (
+        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md text-center">
+            <h3 className="mb-4 text-lg font-semibold">Cambia Password</h3>
+            <input
+              type="password"
+              placeholder="Nuova Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+            />
+            <input
+              type="password"
+              placeholder="Conferma Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+            />
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={handleSavePassword}
+                className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+              >
+                Salva
+              </button>
+              <button
+                onClick={closePasswordPopup}
+                className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                Annulla
               </button>
             </div>
           </div>
