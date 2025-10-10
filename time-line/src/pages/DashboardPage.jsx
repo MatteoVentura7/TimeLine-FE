@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const { deleteUser, isDeleting } = useDeleteUser();
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState("");
+  const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
   const [passwordPopup, setPasswordPopup] = useState({
     visible: false,
@@ -49,9 +50,10 @@ export default function DashboardPage() {
     navigate("/create-user"); // Reindirizza alla pagina di creazione utente
   };
 
-  const handleEdit = (userId, currentEmail) => {
+  const handleEdit = (userId, currentEmail, currentIsConfirmed) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
+    setEditedIsConfirmed(currentIsConfirmed);
   };
 
   const validateEmail = (email) => {
@@ -72,15 +74,19 @@ export default function DashboardPage() {
         `http://localhost:3000/users/update-email/${editingUser}`,
         {
           email: editedEmail,
+          isConfirmed: editedIsConfirmed,
         }
       );
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
-          user.id === editingUser ? { ...user, email: editedEmail } : user
+          user.id === editingUser
+            ? { ...user, email: editedEmail, isConfirmed: editedIsConfirmed }
+            : user
         )
       );
       setEditingUser(null);
       setEditedEmail("");
+      setEditedIsConfirmed(false);
       setStatusMessage({ type: "success", text: response.data.message });
     } catch (error) {
       if (error.response) {
@@ -94,6 +100,7 @@ export default function DashboardPage() {
   const handleCancelEdit = () => {
     setEditingUser(null);
     setEditedEmail("");
+    setEditedIsConfirmed(false);
   };
 
   const confirmDelete = (userId) => {
@@ -226,6 +233,9 @@ export default function DashboardPage() {
                   Email
                 </th>
                 <th className="px-4 py-2 border border-gray-300 text-left">
+                  Email Confirmed
+                </th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
                   Actions
                 </th>
               </tr>
@@ -252,6 +262,24 @@ export default function DashboardPage() {
                     )}
                   </td>
                   <td className="px-4 py-2 border border-gray-300">
+                    {editingUser === user.id ? (
+                      <select
+                        value={editedIsConfirmed}
+                        onChange={(e) =>
+                          setEditedIsConfirmed(e.target.value === "true")
+                        }
+                        className="border border-gray-300 rounded-md px-2 py-1"
+                      >
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                      </select>
+                    ) : user.isConfirmed ? (
+                      "Yes"
+                    ) : (
+                      "No"
+                    )}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
                     <div className="flex justify-end">
                       {editingUser === user.id ? (
                         <>
@@ -271,7 +299,7 @@ export default function DashboardPage() {
                       ) : (
                         <>
                           <button
-                            onClick={() => handleEdit(user.id, user.email)}
+                            onClick={() => handleEdit(user.id, user.email, user.isConfirmed)}
                             className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
                           >
                             <i className="fa-solid fa-pencil"></i> Edit
