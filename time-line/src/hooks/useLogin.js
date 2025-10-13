@@ -22,6 +22,8 @@ export default function useLogin() {
       .then((response) => {
         setLoginResult(response.data.message);
         localStorage.setItem("token", response.data.token); // Salva il token
+        localStorage.setItem("role", response.data.role); // Salva il ruolo
+        console.log("Login successful, " + response.data.token + " role: " + response.data.role);
 
       
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
