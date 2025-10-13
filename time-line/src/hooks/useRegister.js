@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function useRegister() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
+  const roleRef = useRef(""); // Riferimento per il ruolo
   const confirmPasswordRef = useRef("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -40,6 +41,7 @@ export default function useRegister() {
     const email = emailRef.current;
     const password = passwordRef.current;
     const confirmPassword = confirmPasswordRef.current;
+    const role = roleRef.current; // Ottieni il ruolo
 
     const validationMessage = validatePassword(password);
     if (validationMessage) {
@@ -55,7 +57,7 @@ export default function useRegister() {
     }
 
     axios
-      .post("http://localhost:3000/users", { email, password })
+      .post("http://localhost:3000/users", { email, password, role }) // Includi il ruolo nella richiesta
       .then((response) => {
         console.log("User created successfully:", response.data);
         setSuccessMessage(
@@ -92,5 +94,6 @@ export default function useRegister() {
     handlePasswordChange,
     register,
     isLoading, // Esporta lo stato di caricamento
+    roleRef, // Esporta il riferimento del ruolo
   };
 }

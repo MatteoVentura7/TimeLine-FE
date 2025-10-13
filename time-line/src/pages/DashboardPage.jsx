@@ -260,6 +260,9 @@ export default function DashboardPage() {
                   Email Confirmed
                 </th>
                 <th className="px-4 py-2 border border-gray-300 text-left">
+                  Role
+                </th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
                   Actions
                 </th>
               </tr>
@@ -303,6 +306,7 @@ export default function DashboardPage() {
                       "No"
                     )}
                   </td>
+                  <td className="px-4 py-2 border border-gray-300">{user.role}</td>
                   <td className="px-4 py-2 border border-gray-300">
                     <div className="flex justify-end">
                       {editingUser === user.id ? (
