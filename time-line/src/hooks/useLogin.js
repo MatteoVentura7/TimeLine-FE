@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function useLogin() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
+  const roleRef = useRef(""); // Riferimento per il ruolo
   const [loginResult, setLoginResult] = useState(null);
   const [isLoading, setIsLoading] = useState(false); // Stato per gestire il caricamento
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function useLogin() {
       .post("http://localhost:3000/users/login", {
         email: emailRef.current,
         password: passwordRef.current,
+        role: roleRef.current, // Includi il ruolo nella richiesta
       })
       .then((response) => {
         setLoginResult(response.data.message);
@@ -45,5 +47,5 @@ export default function useLogin() {
       });
   };
 
-  return { emailRef, passwordRef, loginResult, login, isLoading };
+  return { emailRef, passwordRef, loginResult, login, isLoading, roleRef};
 }

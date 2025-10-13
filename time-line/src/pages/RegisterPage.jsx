@@ -8,6 +8,7 @@ export default function RegisterPage() {
     emailRef,
     passwordRef,
     confirmPasswordRef,
+    roleRef, // Aggiunto per il riferimento del ruolo
     successMessage,
     errorMessage,
     passwordValidationMessage,
@@ -89,6 +90,24 @@ export default function RegisterPage() {
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
+            </div>
+            <div className="mb-6">
+              <label
+                htmlFor="role"
+                className="block text-gray-700 font-medium mb-2"
+              >
+                Role
+              </label>
+              <select
+                id="role"
+                onChange={(e) => (roleRef.current = e.target.value)}
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="guest">Guest</option>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
             <button
               type="submit"
