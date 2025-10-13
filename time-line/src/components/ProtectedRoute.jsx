@@ -1,7 +1,8 @@
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 function ProtectedRoute({ children, requireToken }) {
   const location = useLocation();
+
   if (requireToken) {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
@@ -15,6 +16,12 @@ function ProtectedRoute({ children, requireToken }) {
     if (!token) {
       return <Navigate to="/" replace />;
     }
+  }
+
+  const userRole = localStorage.getItem('role');
+
+  if (userRole !== 'Admin') {
+    return <Navigate to="/home" replace />;
   }
 
   return children;

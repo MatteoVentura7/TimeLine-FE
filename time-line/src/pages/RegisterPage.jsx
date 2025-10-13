@@ -15,6 +15,8 @@ export default function RegisterPage() {
     handlePasswordChange,
     register,
     isLoading, // Importa lo stato di caricamento
+    nameRef, // Added for name field
+    surnameRef, // Added for surname field
   } = useRegister();
 
   const handleSubmit = (e) => {
@@ -38,21 +40,75 @@ export default function RegisterPage() {
             </div>
           )}
           <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label
-                htmlFor="email"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                autoComplete="username"
-                onChange={(e) => (emailRef.current = e.target.value)}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+            <div className="flex space-x-4 mb-4">
+              <div className="w-1/2">
+                <label
+                  htmlFor="name"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  onChange={(e) => (nameRef.current = e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="w-1/2">
+                <label
+                  htmlFor="surname"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Surname
+                </label>
+                <input
+                  type="text"
+                  id="surname"
+                  onChange={(e) => (surnameRef.current = e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+            <div className="flex space-x-4 mb-4">
+              <div className="w-1/2">
+                <label
+                  htmlFor="email"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  autoComplete="username"
+                  onChange={(e) => (emailRef.current = e.target.value)}
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div className="w-1/2">
+                <label
+                  htmlFor="role"
+                  className="block text-gray-700 font-medium mb-2"
+                >
+                  Role
+                </label>
+                <select
+                  id="role"
+                  onChange={(e) => (roleRef.current = e.target.value)}
+                  required
+                  
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="-">-</option>
+                  <option value="Guest">Guest</option>
+                  <option value="User">User</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
             </div>
             <div className="mb-4">
               <label
@@ -90,24 +146,6 @@ export default function RegisterPage() {
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-            </div>
-            <div className="mb-6">
-              <label
-                htmlFor="role"
-                className="block text-gray-700 font-medium mb-2"
-              >
-                Role
-              </label>
-              <select
-                id="role"
-                onChange={(e) => (roleRef.current = e.target.value)}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="guest">Guest</option>
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
             <button
               type="submit"

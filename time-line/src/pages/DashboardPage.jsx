@@ -44,31 +44,31 @@ export default function DashboardPage() {
   /* Gestione del logout */
 
   const handleLogout = () => {
-    LogoutFunction(); 
-    navigate("/login"); 
+    LogoutFunction();
+    navigate("/login");
   };
-
 
   /* Gestione della creazione di un nuovo utente */
   const handleCreateUser = () => {
-    navigate("/create-user"); 
+    navigate("/create-user");
   };
 
-
   /* Gestione della modifica di un utente */
-  const handleEdit = (userId, currentEmail, currentIsConfirmed) => {
+  const handleEdit = (
+    userId,
+    currentEmail,
+    currentIsConfirmed
+  ) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
     setEditedIsConfirmed(currentIsConfirmed);
   };
-
 
   /* Validazione dell'email */
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
-
 
   /* Salvataggio delle modifiche */
   const handleSave = async () => {
@@ -90,7 +90,11 @@ export default function DashboardPage() {
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === editingUser
-            ? { ...user, email: editedEmail, isConfirmed: editedIsConfirmed }
+            ? {
+                ...user,
+                email: editedEmail,
+                isConfirmed: editedIsConfirmed,
+              }
             : user
         )
       );
@@ -107,14 +111,12 @@ export default function DashboardPage() {
     }
   };
 
-
   /* Annullamento della modifica */
   const handleCancelEdit = () => {
     setEditingUser(null);
     setEditedEmail("");
     setEditedIsConfirmed(false);
   };
-
 
   /* Gestione della cancellazione di un utente */
   const confirmDelete = (userId) => {
@@ -134,13 +136,11 @@ export default function DashboardPage() {
     setPopup({ visible: false, userId: null });
   };
 
-
   /* Gestione della modifica della email durante l'editing */
   const handleEmailChange = (e) => {
     setEditedEmail(e.target.value);
     setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
   };
-
 
   /* Gestione della modifica della password */
   const handleChangePassword = (userId) => {
@@ -159,7 +159,6 @@ export default function DashboardPage() {
     }
     return "";
   };
-
 
   /* Salvataggio della nuova password */
   const handleSavePassword = async () => {
@@ -198,7 +197,6 @@ export default function DashboardPage() {
     }
   };
 
-
   /* Gestione del popup di modifica della password */
   const closePasswordPopup = () => {
     setPasswordPopup({ visible: false, userId: null });
@@ -216,7 +214,7 @@ export default function DashboardPage() {
             <button
               onClick={handleLogout}
               className="bg-red-500  text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-              disabled={!!editingUser} 
+              disabled={!!editingUser}
             >
               Logout
             </button>
@@ -240,7 +238,7 @@ export default function DashboardPage() {
           <button
             onClick={handleCreateUser}
             className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
-            disabled={!!editingUser} 
+            disabled={!!editingUser}
           >
             Create New User
           </button>
@@ -250,8 +248,12 @@ export default function DashboardPage() {
           <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead className="bg-gray-200">
               <tr>
+                <th className="px-4 py-2 border border-gray-300 text-left">ID</th>
                 <th className="px-4 py-2 border border-gray-300 text-left">
-                  ID
+                  Name
+                </th>
+                <th className="px-4 py-2 border border-gray-300 text-left">
+                  Surname
                 </th>
                 <th className="px-4 py-2 border border-gray-300 text-left">
                   Email
@@ -272,6 +274,12 @@ export default function DashboardPage() {
                 <tr key={user.id} className="hover:bg-gray-100">
                   <td className="px-4 py-2 border border-gray-300">
                     {user.id}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                  </td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {user.surname.charAt(0).toUpperCase() + user.surname.slice(1)}
                   </td>
                   <td className="px-4 py-2 border border-gray-300">
                     {editingUser === user.id ? (
@@ -306,7 +314,9 @@ export default function DashboardPage() {
                       "No"
                     )}
                   </td>
-                  <td className="px-4 py-2 border border-gray-300">{user.role}</td>
+                  <td className="px-4 py-2 border border-gray-300">
+                    {user.role}
+                  </td>
                   <td className="px-4 py-2 border border-gray-300">
                     <div className="flex justify-end">
                       {editingUser === user.id ? (
@@ -327,7 +337,13 @@ export default function DashboardPage() {
                       ) : (
                         <>
                           <button
-                            onClick={() => handleEdit(user.id, user.email, user.isConfirmed)}
+                            onClick={() =>
+                              handleEdit(
+                                user.id,
+                                user.email,
+                                user.isConfirmed
+                              )
+                            }
                             className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
                           >
                             <i className="fa-solid fa-pencil"></i> Edit
@@ -335,14 +351,14 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleChangePassword(user.id)}
                             className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
-                            disabled={!!editingUser} 
+                            disabled={!!editingUser}
                           >
                             <i className="fa-solid fa-key"></i> Change Password
                           </button>
                           <button
                             onClick={() => confirmDelete(user.id)}
                             className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                            disabled={!!editingUser} 
+                            disabled={!!editingUser}
                           >
                             <i className="fa-solid fa-trash"></i> Delete
                           </button>

@@ -6,6 +6,8 @@ export default function useRegister() {
   const emailRef = useRef("");
   const passwordRef = useRef("");
   const roleRef = useRef(""); // Riferimento per il ruolo
+  const nameRef = useRef(""); // Riferimento per il nome
+  const surnameRef = useRef(""); // Riferimento per il cognome
   const confirmPasswordRef = useRef("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -42,6 +44,8 @@ export default function useRegister() {
     const password = passwordRef.current;
     const confirmPassword = confirmPasswordRef.current;
     const role = roleRef.current; // Ottieni il ruolo
+    const name = nameRef.current; // Ottieni il nome
+    const surname = surnameRef.current; // Ottieni il cognome
 
     const validationMessage = validatePassword(password);
     if (validationMessage) {
@@ -57,7 +61,7 @@ export default function useRegister() {
     }
 
     axios
-      .post("http://localhost:3000/users", { email, password, role }) // Includi il ruolo nella richiesta
+      .post("http://localhost:3000/users", { email, password, role , name, surname }) // Includi il ruolo nella richiesta
       .then((response) => {
         console.log("User created successfully:", response.data);
         setSuccessMessage(
@@ -95,5 +99,7 @@ export default function useRegister() {
     register,
     isLoading, // Esporta lo stato di caricamento
     roleRef, // Esporta il riferimento del ruolo
+    nameRef, // Export name reference
+    surnameRef, // Export surname reference
   };
 }
