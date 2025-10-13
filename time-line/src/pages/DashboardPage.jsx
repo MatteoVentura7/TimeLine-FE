@@ -41,26 +41,36 @@ export default function DashboardPage() {
     }
   }, [statusMessage]);
 
+  /* Gestione del logout */
+
   const handleLogout = () => {
-    LogoutFunction(); // Usa la funzione di logout
-    navigate("/login"); // Reindirizza alla pagina di login
+    LogoutFunction(); 
+    navigate("/login"); 
   };
 
+
+  /* Gestione della creazione di un nuovo utente */
   const handleCreateUser = () => {
-    navigate("/create-user"); // Reindirizza alla pagina di creazione utente
+    navigate("/create-user"); 
   };
 
+
+  /* Gestione della modifica di un utente */
   const handleEdit = (userId, currentEmail, currentIsConfirmed) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
     setEditedIsConfirmed(currentIsConfirmed);
   };
 
+
+  /* Validazione dell'email */
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
+
+  /* Salvataggio delle modifiche */
   const handleSave = async () => {
     if (!editingUser) return;
 
@@ -97,12 +107,16 @@ export default function DashboardPage() {
     }
   };
 
+
+  /* Annullamento della modifica */
   const handleCancelEdit = () => {
     setEditingUser(null);
     setEditedEmail("");
     setEditedIsConfirmed(false);
   };
 
+
+  /* Gestione della cancellazione di un utente */
   const confirmDelete = (userId) => {
     setPopup({ visible: true, userId });
   };
@@ -120,11 +134,15 @@ export default function DashboardPage() {
     setPopup({ visible: false, userId: null });
   };
 
+
+  /* Gestione della modifica della email durante l'editing */
   const handleEmailChange = (e) => {
     setEditedEmail(e.target.value);
     setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
   };
 
+
+  /* Gestione della modifica della password */
   const handleChangePassword = (userId) => {
     setPasswordPopup({ visible: true, userId });
   };
@@ -142,6 +160,8 @@ export default function DashboardPage() {
     return "";
   };
 
+
+  /* Salvataggio della nuova password */
   const handleSavePassword = async () => {
     const { userId } = passwordPopup;
 
@@ -178,6 +198,8 @@ export default function DashboardPage() {
     }
   };
 
+
+  /* Gestione del popup di modifica della password */
   const closePasswordPopup = () => {
     setPasswordPopup({ visible: false, userId: null });
     setNewPassword("");
@@ -193,7 +215,8 @@ export default function DashboardPage() {
           <div className="flex space-x-4">
             <button
               onClick={handleLogout}
-              className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-red-500  text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              disabled={!!editingUser} 
             >
               Logout
             </button>
@@ -205,7 +228,7 @@ export default function DashboardPage() {
         <h2 className="text-xl font-semibold mb-4">User List</h2>
         {statusMessage && (
           <div
-            className={`fixed top-50 left-52 w-fit p-2 rounded-md shadow-md text-white z-50 ${
+            className={`fixed top-50 left-24 w-fit p-2 rounded-md shadow-md text-white z-50 ${
               statusMessage.type === "success" ? "bg-green-500" : "bg-red-500"
             }`}
           >
@@ -217,6 +240,7 @@ export default function DashboardPage() {
           <button
             onClick={handleCreateUser}
             className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
+            disabled={!!editingUser} 
           >
             Create New User
           </button>
@@ -270,8 +294,8 @@ export default function DashboardPage() {
                         }
                         className="border border-gray-300 rounded-md px-2 py-1"
                       >
-                        <option value="true">Yes</option>
                         <option value="false">No</option>
+                        <option value="true">Yes</option>
                       </select>
                     ) : user.isConfirmed ? (
                       "Yes"
@@ -307,12 +331,14 @@ export default function DashboardPage() {
                           <button
                             onClick={() => handleChangePassword(user.id)}
                             className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
+                            disabled={!!editingUser} 
                           >
                             <i className="fa-solid fa-key"></i> Change Password
                           </button>
                           <button
                             onClick={() => confirmDelete(user.id)}
                             className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                            disabled={!!editingUser} 
                           >
                             <i className="fa-solid fa-trash"></i> Delete
                           </button>
