@@ -10,9 +10,6 @@ export default function DashboardPage() {
   const [users, setUsers] = useState([]);
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
-  const [editingUser, setEditingUser] = useState(null);
-  const [editedEmail, setEditedEmail] = useState("");
-  const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
   const [statusMessage, setStatusMessage] = useState(null);
   const [passwordPopup, setPasswordPopup] = useState({
     visible: false,
@@ -65,75 +62,12 @@ export default function DashboardPage() {
     navigate("/dashboard/create-user");
   };
 
-  /* Gestione della modifica di un utente */
-  // const handleEdit = (
-  //   userId,
-  //   currentEmail,
-  //   currentIsConfirmed
-  // ) => {
-  //   setEditingUser(userId);
-  //   setEditedEmail(currentEmail);
-  //   setEditedIsConfirmed(currentIsConfirmed);
-  // };
-
+ 
    const handleEdit = (userId) => {
     navigate(`/dashboard/edit-profile/${userId}`);
   };
 
-  /* Validazione dell'email */
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  /* Salvataggio delle modifiche */
-  const handleSave = async () => {
-    if (!editingUser) return;
-
-    if (!validateEmail(editedEmail)) {
-      setStatusMessage({ type: "error", text: "Insert a valid email." });
-      return;
-    }
-
-    try {
-      const response = await axios.put(
-        `http://localhost:3000/users/update-email/${editingUser}`,
-        {
-          email: editedEmail,
-          isConfirmed: editedIsConfirmed,
-        }
-      );
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === editingUser
-            ? {
-                ...user,
-                email: editedEmail,
-                isConfirmed: editedIsConfirmed,
-              }
-            : user
-        )
-      );
-      setEditingUser(null);
-      setEditedEmail("");
-      setEditedIsConfirmed(false);
-      setStatusMessage({ type: "success", text: response.data.message });
-    } catch (error) {
-      if (error.response) {
-        setStatusMessage({ type: "error", text: error.response.data.error });
-      } else {
-        setStatusMessage({ type: "error", text: "Errore imprevisto." });
-      }
-    }
-  };
-
-  /* Annullamento della modifica */
-  const handleCancelEdit = () => {
-    setEditingUser(null);
-    setEditedEmail("");
-    setEditedIsConfirmed(false);
-  };
-
+ 
   /* Gestione della cancellazione di un utente */
   const confirmDelete = (userId) => {
     setPopup({ visible: true, userId });
@@ -159,11 +93,7 @@ export default function DashboardPage() {
     setPopup({ visible: false, userId: null });
   };
 
-  /* Gestione della modifica della email durante l'editing */
-  const handleEmailChange = (e) => {
-    setEditedEmail(e.target.value);
-    setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
-  };
+  
 
   /* Gestione della modifica della password */
   const handleChangePassword = (userId) => {
@@ -245,7 +175,7 @@ export default function DashboardPage() {
               <button
                 onClick={handleLogout}
                 className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
-                disabled={!!editingUser}
+                
               >
                 Logout
               </button>
@@ -268,7 +198,7 @@ export default function DashboardPage() {
             <button
               onClick={handleCreateUser}
               className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
-              disabled={!!editingUser}
+              
             >
               Create New User
             </button>
@@ -312,37 +242,11 @@ export default function DashboardPage() {
                       {user.surname.charAt(0).toUpperCase() + user.surname.slice(1)}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
-                      {editingUser === user.id ? (
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          required
-                          value={editedEmail}
-                          onChange={handleEmailChange}
-                          className="border border-gray-300 rounded-md px-2 py-1"
-                        />
-                      ) : (
-                        user.email
-                      )}
+                      {user.email}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
-                      {editingUser === user.id ? (
-                        <select
-                          value={editedIsConfirmed}
-                          onChange={(e) =>
-                            setEditedIsConfirmed(e.target.value === "true")
-                          }
-                          className="border border-gray-300 rounded-md px-2 py-1"
-                        >
-                          <option value="false">No</option>
-                          <option value="true">Yes</option>
-                        </select>
-                      ) : user.isConfirmed ? (
-                        "Yes"
-                      ) : (
-                        "No"
-                      )}
+
+                      {user.isConfirmed ? "Yes" : "No"}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
                       {user.role}
@@ -352,22 +256,7 @@ export default function DashboardPage() {
                       
                       <div className="flex justify-end">
                          
-                        {editingUser === user.id ? (
-                          <>
-                            <button
-                              onClick={handleSave}
-                              className="bg-green-500 text-white py-1 px-3 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={handleCancelEdit}
-                              className="bg-gray-300 text-black py-1 px-3 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
+                        
                           <>
                             <button
                               onClick={() =>
@@ -390,20 +279,20 @@ export default function DashboardPage() {
                             <button
                               onClick={() => handleChangePassword(user.id)}
                               className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
-                              disabled={!!editingUser}
+                              
                             >
                               <i className="fa-solid fa-key"></i> Change Password
                             </button>
                             <button
                               onClick={() => confirmDelete(user.id)}
                               className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mr-2"
-                              disabled={!!editingUser}
+                              
                             >
                               <i className="fa-solid fa-trash"></i> Delete
                             </button>
                            
                           </>
-                        )}
+                        
                       </div>
                     </td>
                   </tr>

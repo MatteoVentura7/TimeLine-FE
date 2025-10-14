@@ -25,7 +25,6 @@ export default function App() {
         <Route path="/profile" element={  <ProfilePage /> } />
         <Route path="/dashboard/user-details/:userId" element={ <ProtectedRoute> <UserDetailsPage /> </ProtectedRoute> } />
         <Route path="/dashboard/edit-profile/:userId" element={ <ProtectedRoute> <EditProfilePage /> </ProtectedRoute> } />
-        
       </Routes>
  
   );
