@@ -8,6 +8,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import HomePage from "./pages/HomePage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 
 export default function App() {
   return (
@@ -20,6 +21,7 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} /> 
         <Route path="/dashboard" element={ <ProtectedRoute> <DashboardPage /> </ProtectedRoute> } />
         <Route path="/create-user" element={ <ProtectedRoute> <RegisterPage /> </ProtectedRoute> } />   
+        <Route path="/profile" element={  <ProfilePage /> } />
       </Routes>
  
   );

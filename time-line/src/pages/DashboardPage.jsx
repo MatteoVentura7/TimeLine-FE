@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 
+
+
+
 export default function DashboardPage() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -19,6 +22,7 @@ export default function DashboardPage() {
   });
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [welcomeMessage, setWelcomeMessage] = useState("");
 
   useEffect(() => {
     axios
@@ -41,11 +45,21 @@ export default function DashboardPage() {
     }
   }, [statusMessage]);
 
+  useEffect(() => {
+    const name = localStorage.getItem("name") || "";
+    const surname = localStorage.getItem("surname") || "";
+
+    const capitalize = (str) =>
+      str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+    setWelcomeMessage(`Hello, ${capitalize(name)} ${capitalize(surname)}`);
+  }, []);
+
   /* Gestione del logout */
 
   const handleLogout = () => {
     LogoutFunction();
-    navigate("/login");
+    navigate("/");
   };
 
   /* Gestione della creazione di un nuovo utente */
@@ -210,10 +224,11 @@ export default function DashboardPage() {
         <div className="container mx-auto flex justify-between items-center px-4">
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <img className="w-48" src="./public/LOGO_ARGOMEDIA.png" alt="" />
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 items-center">
+            <span className="text-gray-700">{welcomeMessage}</span>
             <button
               onClick={handleLogout}
-              className="bg-red-500  text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
               disabled={!!editingUser}
             >
               Logout
@@ -221,6 +236,8 @@ export default function DashboardPage() {
           </div>
         </div>
       </header>
+
+
 
       <main className="container mx-auto py-8 px-4">
         <h2 className="text-xl font-semibold mb-4">User List</h2>
