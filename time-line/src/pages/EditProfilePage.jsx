@@ -1,18 +1,25 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
-import { useState, useEffect } from "react";
+import useEditProfile from "../hooks/useEditProfile";
+import { useEffect } from "react";
 import axios from "axios";
 
 export default function UserDetailsPage() {
   const { userId } = useParams();
   const navigate = useNavigate();
   const { user, loading, error } = useDetails(userId);
-  const [editingUser, setEditingUser] = useState(null);
-  const [editedEmail, setEditedEmail] = useState("");
-  const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
-  const [statusMessage, setStatusMessage] = useState(null);
-  const [users, setUsers] = useState([]);
+  const {
+    editingUser,
+    editedEmail,
+    editedIsConfirmed,
+    statusMessage,
+    handleEdit,
+    handleSave,
+    handleCancelEdit,
+    setEditedEmail,
+    setEditedIsConfirmed,
+  } = useEditProfile();
 
   useEffect(() => {
     axios
@@ -33,75 +40,8 @@ export default function UserDetailsPage() {
     return <div>{error}</div>;
   }
 
-  /* Gestione della modifica di un utente */
-  const handleEdit = (
-    userId,
-    currentEmail,
-    currentIsConfirmed
-  ) => {
-    setEditingUser(userId);
-    setEditedEmail(currentEmail);
-    setEditedIsConfirmed(currentIsConfirmed);
-  };
-
-  /* Validazione dell'email */
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  /* Salvataggio delle modifiche */
-  const handleSave = async () => {
-    if (!editingUser) return;
-
-    if (!validateEmail(editedEmail)) {
-      setStatusMessage({ type: "error", text: "Insert a valid email." });
-      return;
-    }
-
-    try {
-      const response = await axios.put(
-        `http://localhost:3000/users/update-email/${editingUser}`,
-        {
-          email: editedEmail,
-          isConfirmed: editedIsConfirmed,
-        }
-      );
-      setUsers((prevUsers) =>
-        prevUsers.map((user) =>
-          user.id === editingUser
-            ? {
-                ...user,
-                email: editedEmail,
-                isConfirmed: editedIsConfirmed,
-              }
-            : user
-        )
-      );
-      setEditingUser(null);
-      setEditedEmail("");
-      setEditedIsConfirmed(false);
-      setStatusMessage({ type: "success", text: response.data.message });
-    } catch (error) {
-      if (error.response) {
-        setStatusMessage({ type: "error", text: error.response.data.error });
-      } else {
-        setStatusMessage({ type: "error", text: "Errore imprevisto." });
-      }
-    }
-  };
-
-  /* Annullamento della modifica */
-  const handleCancelEdit = () => {
-    setEditingUser(null);
-    setEditedEmail("");
-    setEditedIsConfirmed(false);
-  };
-
-  /* Gestione della modifica della email durante l'editing */
   const handleEmailChange = (e) => {
     setEditedEmail(e.target.value);
-    setStatusMessage(null); // Rimuove il messaggio di errore mentre l'utente digita
   };
 
   return (
@@ -170,8 +110,7 @@ export default function UserDetailsPage() {
               <strong>Surname:</strong> {user.surname}
             </p>
             <p>
-                <strong>Email:</strong> 
-              {" "}
+              <strong>Email:</strong>{" "}
               {editingUser === user.id ? (
                 <input
                   type="email"
@@ -187,7 +126,7 @@ export default function UserDetailsPage() {
               )}
             </p>
             <p>
-                <strong>Confirmed email:</strong>{" "}
+              <strong>Confirmed email:</strong>{" "}
               {editingUser === user.id ? (
                 <select
                   value={editedIsConfirmed}
