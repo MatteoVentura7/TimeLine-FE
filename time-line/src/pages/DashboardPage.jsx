@@ -66,14 +66,18 @@ export default function DashboardPage() {
   };
 
   /* Gestione della modifica di un utente */
-  const handleEdit = (
-    userId,
-    currentEmail,
-    currentIsConfirmed
-  ) => {
-    setEditingUser(userId);
-    setEditedEmail(currentEmail);
-    setEditedIsConfirmed(currentIsConfirmed);
+  // const handleEdit = (
+  //   userId,
+  //   currentEmail,
+  //   currentIsConfirmed
+  // ) => {
+  //   setEditingUser(userId);
+  //   setEditedEmail(currentEmail);
+  //   setEditedIsConfirmed(currentIsConfirmed);
+  // };
+
+   const handleEdit = (userId) => {
+    navigate(`/dashboard/edit-profile/${userId}`);
   };
 
   /* Validazione dell'email */
@@ -223,6 +227,11 @@ export default function DashboardPage() {
     setConfirmPassword("");
   };
 
+  /* Gestione della visualizzazione dei dettagli dell'utente */
+  const handleViewDetails = (userId) => {
+    navigate(`/dashboard/user-details/${userId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar />
@@ -338,8 +347,11 @@ export default function DashboardPage() {
                     <td className="px-4 py-2 border border-gray-300">
                       {user.role}
                     </td>
+                    
                     <td className="px-4 py-2 border border-gray-300">
+                      
                       <div className="flex justify-end">
+                         
                         {editingUser === user.id ? (
                           <>
                             <button
@@ -370,6 +382,12 @@ export default function DashboardPage() {
                               <i className="fa-solid fa-pencil"></i> Edit
                             </button>
                             <button
+                              onClick={() => handleViewDetails(user.id)}
+                              className="bg-purple-500 mr-2 text-white py-1 px-3 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            >
+                              <i className="fa-solid fa-eye"></i> View Details
+                            </button>
+                            <button
                               onClick={() => handleChangePassword(user.id)}
                               className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
                               disabled={!!editingUser}
@@ -378,11 +396,12 @@ export default function DashboardPage() {
                             </button>
                             <button
                               onClick={() => confirmDelete(user.id)}
-                              className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                              className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mr-2"
                               disabled={!!editingUser}
                             >
                               <i className="fa-solid fa-trash"></i> Delete
                             </button>
+                           
                           </>
                         )}
                       </div>
