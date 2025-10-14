@@ -62,7 +62,7 @@ export default function DashboardPage() {
 
   /* Gestione della creazione di un nuovo utente */
   const handleCreateUser = () => {
-    navigate("/create-user");
+    navigate("/dashboard/create-user");
   };
 
   /* Gestione della modifica di un utente */
@@ -137,9 +137,16 @@ export default function DashboardPage() {
 
   const handleDelete = async () => {
     const { userId } = popup;
-    const success = await deleteUser(userId);
-    if (success) {
-      setUsers(users.filter((user) => user.id !== userId));
+    try {
+      const success = await deleteUser(userId);
+      if (success) {
+        setUsers(users.filter((user) => user.id !== userId));
+        setStatusMessage({ type: "success", text: "User deleted successfully." });
+      } else {
+        setStatusMessage({ type: "error", text: "Failed to delete user." });
+      }
+    } catch (error) {
+      setStatusMessage({ type: "error", text: "An unexpected error occurred." });
     }
     setPopup({ visible: false, userId: null });
   };
@@ -240,7 +247,7 @@ export default function DashboardPage() {
           <h2 className="text-xl font-semibold mb-4">User List</h2>
           {statusMessage && (
             <div
-              className={`fixed top-50 left-24 w-fit p-2 rounded-md shadow-md text-white z-50 ${
+              className={`fixed bottom-10 right-10 w-fit p-3  shadow-md text-white z-50 ${
                 statusMessage.type === "success" ? "bg-green-500" : "bg-red-500"
               }`}
             >
@@ -451,6 +458,14 @@ export default function DashboardPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {isDeleting && (
+        <div className="fixed bottom-10 right-10 w-fit p-2 text-white z-50">
+          <div className="bg-amber-400 p-2  text-center">
+            <p>Deleting user...</p>
           </div>
         </div>
       )}

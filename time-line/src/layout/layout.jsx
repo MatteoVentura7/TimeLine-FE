@@ -22,7 +22,7 @@ export default function Layout({ children }) {
               }
             }}
             className="w-52 cursor-pointer"
-            src="./public/LOGO_ARGOMEDIA.png"
+            src="/LOGO_ARGOMEDIA.png"
             alt="Logo"
           />
         </div>

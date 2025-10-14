@@ -154,7 +154,7 @@ export default function RegisterPage() {
               }`}
               disabled={isLoading} // Disabilita il pulsante durante il caricamento
             >
-              {isLoading ? "Loading..." : "Register"}{" "}
+              {isLoading ? "Loading..." : "Create new user"}{" "}
               {/* Mostra "Loading..." durante il caricamento */}
             </button>
           </form>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
             onClick={() => navigate("/dashboard")}
             className="mt-4 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500"
           >
-            Turn back to Dashboard
+            Return to the dashboard
           </button>
         </div>
       </Layout>

@@ -6,6 +6,7 @@ export const useDeleteUser = () => {
   const deleteUser = async (userId) => {
     setIsDeleting(true);
     try {
+      
       const response = await fetch(`http://localhost:3000/users/${userId}`, {
         method: "DELETE",
       });
