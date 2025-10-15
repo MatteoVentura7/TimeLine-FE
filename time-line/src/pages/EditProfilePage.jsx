@@ -13,12 +13,16 @@ export default function UserDetailsPage() {
     editingUser,
     editedEmail,
     editedIsConfirmed,
+    editedName,
+    editedSurname,
     statusMessage,
     handleEdit,
     handleSave,
     handleCancelEdit,
     setEditedEmail,
     setEditedIsConfirmed,
+    setEditedName,
+    setEditedSurname,
   } = useEditProfile();
 
   useEffect(() => {
@@ -42,6 +46,14 @@ export default function UserDetailsPage() {
 
   const handleEmailChange = (e) => {
     setEditedEmail(e.target.value);
+  };
+
+  const handleNameChange = (e) => {
+    setEditedName(e.target.value);
+  };
+
+  const handleSurnameChange = (e) => {
+    setEditedSurname(e.target.value);
   };
 
   return (
@@ -92,7 +104,13 @@ export default function UserDetailsPage() {
               <>
                 <button
                   onClick={() =>
-                    handleEdit(user.id, user.email, user.isConfirmed)
+                    handleEdit(
+                      user.id,
+                      user.email,
+                      user.isConfirmed,
+                      user.name,
+                      user.surname
+                    )
                   }
                   className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
                 >
@@ -104,10 +122,36 @@ export default function UserDetailsPage() {
               <strong>ID:</strong> {user.id}
             </p>
             <p>
-              <strong>Name:</strong> {user.name}
+              <strong>Name:</strong>{" "}
+              {editingUser === user.id ? (
+                <input
+                  type="text"
+                  id="Name"
+                  name="Name"
+                  required
+                  value={editedName}
+                  onChange={handleNameChange}
+                  className="border border-gray-300 rounded-md px-2 py-1"
+                />
+              ) : (
+                user.name
+              )}
             </p>
             <p>
-              <strong>Surname:</strong> {user.surname}
+              <strong>Surname:</strong>{" "}
+              {editingUser === user.id ? (
+                <input
+                  type="text"
+                  id="Surname"
+                  name="Surname"
+                  required
+                  value={editedSurname}
+                  onChange={handleSurnameChange}
+                  className="border border-gray-300 rounded-md px-2 py-1"
+                />
+              ) : (
+                user.surname
+              )}
             </p>
             <p>
               <strong>Email:</strong>{" "}

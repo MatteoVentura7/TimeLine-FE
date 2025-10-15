@@ -5,6 +5,8 @@ const useEditProfile = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState("");
   const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
+  const [editedName, setEditedName] = useState("");
+  const [editedSurname, setEditedSurname] = useState("");
   const [statusMessage, setStatusMessage] = useState(null);
 
   const validateEmail = (email) => {
@@ -12,10 +14,12 @@ const useEditProfile = () => {
     return emailRegex.test(email);
   };
 
-  const handleEdit = (userId, currentEmail, currentIsConfirmed) => {
+  const handleEdit = (userId, currentEmail, currentIsConfirmed, currentName, currentSurname) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
     setEditedIsConfirmed(currentIsConfirmed);
+    setEditedName(currentName);
+    setEditedSurname(currentSurname);
   };
 
   const handleSave = async () => {
@@ -32,13 +36,23 @@ const useEditProfile = () => {
         {
           email: editedEmail,
           isConfirmed: editedIsConfirmed,
+          name: editedName,
+          surname: editedSurname,
         }
       );
       setStatusMessage({ type: "success", text: response.data.message });
-          setEditingUser(null); // Reset editing state after saving
+      setEditingUser(null); // Reset editing state after saving
       setEditedEmail("");
       setEditedIsConfirmed(false);
-      return { userId: editingUser, email: editedEmail, isConfirmed: editedIsConfirmed };
+      setEditedName("");
+      setEditedSurname("");
+      return {
+        userId: editingUser,
+        email: editedEmail,
+        isConfirmed: editedIsConfirmed,
+        name: editedName,
+        surname: editedSurname,
+      };
     } catch (error) {
       if (error.response) {
         setStatusMessage({ type: "error", text: error.response.data.error });
@@ -52,18 +66,24 @@ const useEditProfile = () => {
     setEditingUser(null);
     setEditedEmail("");
     setEditedIsConfirmed(false);
+    setEditedName("");
+    setEditedSurname("");
   };
 
   return {
     editingUser,
     editedEmail,
     editedIsConfirmed,
+    editedName,
+    editedSurname,
     statusMessage,
     handleEdit,
     handleSave,
     handleCancelEdit,
     setEditedEmail,
     setEditedIsConfirmed,
+    setEditedName,
+    setEditedSurname,
   };
 };
 
