@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useEditProfile = () => {
+const useEditProfile = (onProfileUpdate) => {
   const [editingUser, setEditingUser] = useState(null);
   const [editedEmail, setEditedEmail] = useState("");
   const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
@@ -15,6 +15,7 @@ const useEditProfile = () => {
   });
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  
 
 
 
@@ -52,13 +53,7 @@ const useEditProfile = () => {
         }
       );
       setStatusMessage({ type: "success", text: response.data.message });
-      setEditingUser(null); // Reset editing state after saving
-      setEditedEmail("");
-      setEditedIsConfirmed(false);
-      setEditedName("");
-      setEditedSurname("");
-      setEditedRole("");
-      return {
+      const updatedUser = {
         userId: editingUser,
         email: editedEmail,
         isConfirmed: editedIsConfirmed,
@@ -66,7 +61,17 @@ const useEditProfile = () => {
         surname: editedSurname,
         role: editedRole,
       };
+      if (onProfileUpdate) {
+        onProfileUpdate(updatedUser);
+      }
+      setEditingUser(null); // Reset editing state after saving
+      setEditedEmail("");
+      setEditedIsConfirmed(false);
+      setEditedName("");
+      setEditedSurname("");
+      setEditedRole("");
     } catch (error) {
+      console.error("Error during profile update:", error);
       if (error.response) {
         setStatusMessage({ type: "error", text: error.response.data.error });
       } else {

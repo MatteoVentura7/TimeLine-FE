@@ -21,14 +21,7 @@ export default function Sidebar() {
                     <i className="fa-solid fa-bars"></i>
                     <span className="mx-4 font-medium">Dasboard</span>
                 </a>
-                <a href="#" className="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700">
-                      <i className="fa-solid fa-envelope"></i>
-                    <span className="mx-4 font-medium">Message</span>
-                </a>
-                <a href="#" className="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700">
-                      <i className="fa-solid fa-gear"></i>
-                    <span className="mx-4 font-medium">Settings</span>
-                </a>
+            
                 <button
                 onClick={handleLogout}
                 className="w-full text-left flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700"

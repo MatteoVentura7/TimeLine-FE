@@ -9,7 +9,8 @@ import LayoutDashboard from "../layout/layoutDashboard";
 export default function UserDetailsPage() {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { user, loading, error } = useDetails(userId);
+  const { user, loading, error, setUser } = useDetails(userId);
+
   const {
     editingUser,
     editedEmail,
@@ -34,20 +35,13 @@ export default function UserDetailsPage() {
     handleChangePassword,
     handleSavePassword,
     closePasswordPopup,
-
-  } = useEditProfile();
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/users")
-      .then((response) => {
-        setUsers(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching users:", error);
-      });
-  }, []);
+  } = useEditProfile((updatedUser) => {
+    // Aggiorna lo stato locale con i dati aggiornati
+    setUser((prevUser) => ({
+      ...prevUser,
+      ...updatedUser,
+    }));
+  });
 
   if (loading) {
     return <div>Loading...</div>;
@@ -125,13 +119,12 @@ export default function UserDetailsPage() {
                   >
                     <i className="fa-solid fa-pencil"></i> Edit
                   </button>
-                    <button
-                              onClick={() => handleChangePassword(user.id)}
-                              className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
-                              
-                            >
-                              <i className="fa-solid fa-key"></i> Change Password
-                            </button>
+                  <button
+                    onClick={() => handleChangePassword(user.id)}
+                    className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
+                  >
+                    <i className="fa-solid fa-key"></i> Change Password
+                  </button>
                 </>
               )}
             </div>

@@ -19,5 +19,5 @@ export default function useDetails(userId) {
       });
   }, [userId]);
 
-  return { user, loading, error };
+  return { user, setUser, loading, error };
 }
