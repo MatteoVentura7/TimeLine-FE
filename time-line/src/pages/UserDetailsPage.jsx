@@ -22,15 +22,15 @@ export default function UserDetailsPage() {
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         
-        <main className="w-full container mx-auto py-8 px-4">
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">User Information</h2>
-            <p><strong>ID:</strong> {user.id}</p>
-            <p><strong>Name:</strong> {user.name}</p>
-            <p><strong>Surname:</strong> {user.surname}</p>
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Email Confirmed:</strong> {user.isConfirmed ? "Yes" : "No"}</p>
-            <p><strong>Role:</strong> {user.role}</p>
+        <main className=" py-12 px-6 bg-gray-50 ">
+          <div className="bg-white p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">User Information</h2>
+            <p className="text-gray-700 mb-2 text-lg"><strong>ID:</strong> {user.id}</p>
+            <p className="text-gray-700 mb-2 text-lg"><strong>Name:</strong> {user.name.charAt(0).toUpperCase() + user.name.slice(1)}</p>
+            <p className="text-gray-700 mb-2 text-lg"><strong>Surname:</strong> {user.surname.charAt(0).toUpperCase() + user.surname.slice(1)}</p>
+            <p className="text-gray-700 mb-2 text-lg"><strong>Email:</strong> {user.email}</p>
+            <p className="text-gray-700 mb-2 text-lg"><strong>Email Confirmed:</strong> {user.isConfirmed ? "Yes" : "No"}</p>
+            <p className="text-gray-700 mb-2 text-lg"><strong>Role:</strong> {user.role}</p>
           </div>
         </main>
       </div>

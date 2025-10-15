@@ -72,9 +72,9 @@ export default function UserDetailsPage() {
       <Sidebar />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
-        <main className="w-full container mx-auto py-8 px-4">
-          <div className="bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-semibold mb-4">User Information</h2>
+        <main className="py-12 px-6 bg-gray-50 ">
+          <div className="bg-white  p-6">
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">User Information</h2>
             {statusMessage && (
               <div
                 className={`p-4 rounded-md mb-4 ${
@@ -128,13 +128,13 @@ export default function UserDetailsPage() {
                 </>
               )}
             </div>
-            <div className="mt-3 mb-3 ">
+            <div className="mt-3 mb-3 text-gray-700 ">
               <p className="text-lg">
                 <strong>ID</strong>
               </p>
               <span className="text-xl ">{user.id}</span>
             </div>
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Name</strong>{" "}
               </p>
@@ -150,11 +150,11 @@ export default function UserDetailsPage() {
                     className="border border-gray-300 rounded-md px-2 py-1"
                   />
                 ) : (
-                  user.name
+                  user.surname.charAt(0).toUpperCase() + user.surname.slice(1)
                 )}
               </span>
             </div>
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Surname</strong>{" "}
                </p>
@@ -170,11 +170,11 @@ export default function UserDetailsPage() {
                     className="border border-gray-300 rounded-md px-2 py-1"
                   />
                 ) : (
-                  user.surname
+                  user.surname.charAt(0).toUpperCase() + user.surname.slice(1)
                 )}
               </span>
             </div>
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Email</strong>{" "}
               </p>
@@ -195,7 +195,7 @@ export default function UserDetailsPage() {
               </span>
             </div>
             
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Confirmed email</strong>{" "}
               </p>
@@ -220,7 +220,7 @@ export default function UserDetailsPage() {
               </span>
             </div>
 
-            <div className="mt-3 mb-3">
+            <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Role</strong>{" "}
               </p>
