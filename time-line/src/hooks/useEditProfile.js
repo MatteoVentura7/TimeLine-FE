@@ -7,6 +7,7 @@ const useEditProfile = () => {
   const [editedIsConfirmed, setEditedIsConfirmed] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [editedSurname, setEditedSurname] = useState("");
+  const [editedRole, setEditedRole] = useState("");
   const [statusMessage, setStatusMessage] = useState(null);
 
   const validateEmail = (email) => {
@@ -14,12 +15,13 @@ const useEditProfile = () => {
     return emailRegex.test(email);
   };
 
-  const handleEdit = (userId, currentEmail, currentIsConfirmed, currentName, currentSurname) => {
+  const handleEdit = (userId, currentEmail, currentIsConfirmed, currentName, currentSurname, currentRole) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
     setEditedIsConfirmed(currentIsConfirmed);
     setEditedName(currentName);
     setEditedSurname(currentSurname);
+    setEditedRole(currentRole);
   };
 
   const handleSave = async () => {
@@ -38,6 +40,7 @@ const useEditProfile = () => {
           isConfirmed: editedIsConfirmed,
           name: editedName,
           surname: editedSurname,
+          role: editedRole,
         }
       );
       setStatusMessage({ type: "success", text: response.data.message });
@@ -46,12 +49,14 @@ const useEditProfile = () => {
       setEditedIsConfirmed(false);
       setEditedName("");
       setEditedSurname("");
+      setEditedRole("");
       return {
         userId: editingUser,
         email: editedEmail,
         isConfirmed: editedIsConfirmed,
         name: editedName,
         surname: editedSurname,
+        role: editedRole,
       };
     } catch (error) {
       if (error.response) {
@@ -68,6 +73,7 @@ const useEditProfile = () => {
     setEditedIsConfirmed(false);
     setEditedName("");
     setEditedSurname("");
+    setEditedRole("");
   };
 
   return {
@@ -76,6 +82,7 @@ const useEditProfile = () => {
     editedIsConfirmed,
     editedName,
     editedSurname,
+    editedRole,
     statusMessage,
     handleEdit,
     handleSave,
@@ -84,6 +91,7 @@ const useEditProfile = () => {
     setEditedIsConfirmed,
     setEditedName,
     setEditedSurname,
+    setEditedRole,
   };
 };
 

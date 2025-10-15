@@ -15,6 +15,7 @@ export default function UserDetailsPage() {
     editedIsConfirmed,
     editedName,
     editedSurname,
+    editedRole,
     statusMessage,
     handleEdit,
     handleSave,
@@ -23,6 +24,7 @@ export default function UserDetailsPage() {
     setEditedIsConfirmed,
     setEditedName,
     setEditedSurname,
+    setEditedRole,
   } = useEditProfile();
 
   useEffect(() => {
@@ -54,6 +56,10 @@ export default function UserDetailsPage() {
 
   const handleSurnameChange = (e) => {
     setEditedSurname(e.target.value);
+  };
+
+  const handleRoleChange = (e) => {
+    setEditedRole(e.target.value);
   };
 
   return (
@@ -109,7 +115,8 @@ export default function UserDetailsPage() {
                       user.email,
                       user.isConfirmed,
                       user.name,
-                      user.surname
+                      user.surname,
+                      user.role
                     )
                   }
                   className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
@@ -189,7 +196,20 @@ export default function UserDetailsPage() {
               )}
             </p>
             <p>
-              <strong>Role:</strong> {user.role}
+              <strong>Role:</strong>{" "}
+              {editingUser === user.id ? (
+                <select
+                  value={editedRole}
+                  onChange={handleRoleChange}
+                  className="border border-gray-300 rounded-md px-2 py-1"
+                >
+                  <option value="Admin">Admin</option>
+                  <option value="User">User</option>
+                  <option value="Guest">Guest</option>
+                </select>
+              ) : (
+                user.role
+              )}
             </p>
           </div>
         </main>
