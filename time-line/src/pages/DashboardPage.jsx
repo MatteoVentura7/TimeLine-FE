@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { LogoutFunction } from "../components/LogoutFunction";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
@@ -12,7 +11,7 @@ export default function DashboardPage() {
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
   const [statusMessage, setStatusMessage] = useState(null);
-  const [welcomeMessage, setWelcomeMessage] = useState("");
+  
 
   useEffect(() => {
     axios
@@ -34,23 +33,6 @@ export default function DashboardPage() {
       return () => clearTimeout(timer);
     }
   }, [statusMessage]);
-
-  useEffect(() => {
-    const name = localStorage.getItem("name") || "";
-    const surname = localStorage.getItem("surname") || "";
-
-    const capitalize = (str) =>
-      str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
-    setWelcomeMessage(`Hello, ${capitalize(name)} ${capitalize(surname)}`);
-  }, []);
-
-  /* Gestione del logout */
-
-  const handleLogout = () => {
-    LogoutFunction();
-    navigate("/");
-  };
 
   /* Gestione della creazione di un nuovo utente */
   const handleCreateUser = () => {
