@@ -4,7 +4,7 @@ import useDetails from "../hooks/useDetails";
 import useEditProfile from "../hooks/useEditProfile";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import WelcomeMessagge from "../components/WelcomeMessagge";
+import LayoutDashboard from "../layout/layoutDashboard";
 
 export default function UserDetailsPage() {
   const { userId } = useParams();
@@ -26,6 +26,15 @@ export default function UserDetailsPage() {
     setEditedName,
     setEditedSurname,
     setEditedRole,
+    passwordPopup,
+    newPassword,
+    setNewPassword, 
+    confirmPassword,
+    setConfirmPassword,
+    handleChangePassword,
+    handleSavePassword,
+    closePasswordPopup,
+
   } = useEditProfile();
   const [users, setUsers] = useState([]);
 
@@ -68,21 +77,7 @@ export default function UserDetailsPage() {
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <header className="w-full text-black py-4 shadow-md">
-          <div className="container mx-auto flex justify-between items-center px-4">
-            <h1 className="text-2xl font-bold">Profile Page Edit</h1>
-            <img className="w-48" src="/LOGO_ARGOMEDIA.png" alt="Logo Argomedia" />
-            <div className="flex space-x-4 items-center">
-              <WelcomeMessagge />
-              <button
-                onClick={() => navigate(-1)}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                Back
-              </button>
-            </div>
-          </div>
-        </header>
+        <LayoutDashboard />
         <main className="w-full container mx-auto py-8 px-4">
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-semibold mb-4">User Information</h2>
@@ -130,6 +125,13 @@ export default function UserDetailsPage() {
                   >
                     <i className="fa-solid fa-pencil"></i> Edit
                   </button>
+                    <button
+                              onClick={() => handleChangePassword(user.id)}
+                              className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
+                              
+                            >
+                              <i className="fa-solid fa-key"></i> Change Password
+                            </button>
                 </>
               )}
             </div>
@@ -245,6 +247,50 @@ export default function UserDetailsPage() {
                 )}
               </span>
             </div>
+             {passwordPopup.visible && (
+        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-md text-center">
+            <h3 className="mb-4 text-lg font-semibold">Change Password</h3>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); // Impedisce l'invio del form
+                handleSavePassword(); // Chiama la funzione per salvare la password
+              }}
+            >
+              <input
+                type="password"
+                placeholder="New Password"
+                required
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+              />
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                required
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+              />
+              <div className="flex justify-center space-x-4">
+                <button
+                  type="submit"
+                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={closePasswordPopup}
+                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
           </div>
         </main>
       </div>

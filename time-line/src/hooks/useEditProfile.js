@@ -9,6 +9,14 @@ const useEditProfile = () => {
   const [editedSurname, setEditedSurname] = useState("");
   const [editedRole, setEditedRole] = useState("");
   const [statusMessage, setStatusMessage] = useState(null);
+   const [passwordPopup, setPasswordPopup] = useState({
+    visible: false,
+    userId: null,
+  });
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -86,6 +94,68 @@ const useEditProfile = () => {
     }
   }, [statusMessage]);
 
+   /* Gestione della modifica della password */
+  const handleChangePassword = (userId) => {
+    setPasswordPopup({ visible: true, userId });
+  };
+
+  const validatePassword = (password) => {
+    if (password.length < 8) {
+      return "The password must be at least 8 characters long.";
+    }
+    if (!/[A-Z]/.test(password)) {
+      return "The password must contain at least one uppercase letter.";
+    }
+    if (!/[0-9]/.test(password)) {
+      return "The password must contain at least one number.";
+    }
+    return "";
+  };
+
+  /* Salvataggio della nuova password */
+  const handleSavePassword = async () => {
+    const { userId } = passwordPopup;
+
+    const validationMessage = validatePassword(newPassword);
+    if (validationMessage) {
+      setStatusMessage({ type: "error", text: validationMessage });
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setStatusMessage({ type: "error", text: "Passwords do not match." });
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/users/change-password/${userId}`,
+        {
+          newPassword,
+          confirmPassword,
+          id: userId,
+        }
+      );
+      setStatusMessage({ type: "success", text: response.data.message });
+      setPasswordPopup({ visible: false, userId: null });
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      if (error.response) {
+        setStatusMessage({ type: "error", text: error.response.data.error });
+      } else {
+        setStatusMessage({ type: "error", text: "Errore imprevisto." });
+      }
+    }
+  };
+
+  /* Gestione del popup di modifica della password */
+  const closePasswordPopup = () => {
+    setPasswordPopup({ visible: false, userId: null });
+    setNewPassword("");
+    setConfirmPassword("");
+  };
+
   return {
     editingUser,
     editedEmail,
@@ -102,6 +172,14 @@ const useEditProfile = () => {
     setEditedName,
     setEditedSurname,
     setEditedRole,
+    passwordPopup,
+    newPassword,
+    setNewPassword,
+    confirmPassword,
+    setConfirmPassword,
+    handleChangePassword,
+    handleSavePassword,
+    closePasswordPopup,
   };
 };
 

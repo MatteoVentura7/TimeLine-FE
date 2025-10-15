@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useRegister from "../hooks/useRegister";
-import Layout from "../layout/layout";
+import Sidebar from "../components/sidebar";
+import LayoutDashboard from "../layout/layoutDashboard";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -26,7 +27,11 @@ export default function RegisterPage() {
 
   return (
     <div>
-      <Layout>
+       <div className="min-h-screen bg-gray-100 relative flex">
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+              <LayoutDashboard />
+              <main>
         <div className="max-w-md mx-auto mt-10">
           <h1 className="text-2xl font-bold mb-6">Create New User</h1>
           {successMessage && (
@@ -165,7 +170,10 @@ export default function RegisterPage() {
             Return to the dashboard
           </button>
         </div>
-      </Layout>
+      
+      </main>
+      </div>
+      </div>
     </div>
   );
 }

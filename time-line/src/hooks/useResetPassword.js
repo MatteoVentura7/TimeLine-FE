@@ -38,7 +38,7 @@ export function useResetPassword() {
       })
       .then((response) => {
         setMessage(response.data.message || "Password changed successfully");
-        navigate("/login"); // Redirect to login page
+        navigate("/"); // Redirect to login page
       })
       .catch((error) => {
         setMessage(error.response?.data?.error || "Failed to change password");

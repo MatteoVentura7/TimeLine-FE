@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
+import LayoutDashboard from "../layout/layoutDashboard";
 
 export default function UserDetailsPage() {
   const { userId } = useParams();
@@ -19,17 +20,8 @@ export default function UserDetailsPage() {
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar />
       <div className="flex-1 flex flex-col">
-        <header className="w-full text-black py-4 shadow-md">
-          <div className="container mx-auto flex justify-between items-center px-4">
-            <h1 className="text-2xl font-bold">User Details</h1>
-            <button
-              onClick={() => navigate(-1)}
-              className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              Back
-            </button>
-          </div>
-        </header>
+        <LayoutDashboard />
+        
         <main className="w-full container mx-auto py-8 px-4">
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">User Information</h2>
