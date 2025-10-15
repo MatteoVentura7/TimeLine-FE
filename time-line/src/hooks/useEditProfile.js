@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 const useEditProfile = () => {
@@ -75,6 +75,16 @@ const useEditProfile = () => {
     setEditedSurname("");
     setEditedRole("");
   };
+
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => {
+        setStatusMessage(null);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
 
   return {
     editingUser,
