@@ -2,13 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
 import useEditProfile from "../hooks/useEditProfile";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import LayoutDashboard from "../layout/layoutDashboard";
 
 export default function UserDetailsPage() {
   const { userId } = useParams();
-  const navigate = useNavigate();
   const { user, loading, error, setUser } = useDetails(userId);
 
   const {
@@ -69,7 +66,7 @@ export default function UserDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
-      <Sidebar />
+      <Sidebar title="User Edit" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         <main className="py-12 px-6 bg-gray-50 ">
@@ -150,7 +147,7 @@ export default function UserDetailsPage() {
                     className="border border-gray-300 rounded-md px-2 py-1"
                   />
                 ) : (
-                  user.surname.charAt(0).toUpperCase() + user.surname.slice(1)
+                  user.name.charAt(0).toUpperCase() + user.name.slice(1)
                 )}
               </span>
             </div>

@@ -78,7 +78,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
-      <Sidebar />
+      <Sidebar title = "Dashboard" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         <main className="w-full container mx-auto py-8 px-4">

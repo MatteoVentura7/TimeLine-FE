@@ -18,7 +18,7 @@ export default function UserDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
-      <Sidebar />
+      <Sidebar title="User Details" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         

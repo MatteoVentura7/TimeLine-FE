@@ -1,7 +1,7 @@
 import { LogoutFunction } from "./LogoutFunction";
 import { useNavigate } from "react-router-dom";
 
-export default function Sidebar() {
+export default function Sidebar({ title = "Sidebar" }) {
 
     const navigate = useNavigate();
 
@@ -13,7 +13,7 @@ export default function Sidebar() {
   return (
    <div className="hidden md:flex flex-col w-64 bg-gray-800 h-screen">
         <div className="flex items-center justify-center h-31 bg-gray-900">
-            <span className="text-white font-bold uppercase">Sidebar</span>
+            <span className="text-white font-bold uppercase">{title}</span>
         </div>
         <div className="flex flex-col flex-1 overflow-y-auto">
             <nav className="flex-1 px-2 py-4 bg-gray-800">

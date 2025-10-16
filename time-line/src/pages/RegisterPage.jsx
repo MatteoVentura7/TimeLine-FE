@@ -28,7 +28,7 @@ export default function RegisterPage() {
   return (
     <div>
        <div className="min-h-screen bg-gray-100 relative flex">
-            <Sidebar />
+            <Sidebar title="Create User" />
             <div className="flex-1 flex flex-col">
               <LayoutDashboard />
               <main>
@@ -105,10 +105,9 @@ export default function RegisterPage() {
                   id="role"
                   onChange={(e) => (roleRef.current = e.target.value)}
                   required
-                  
                   className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="-">-</option>
+                  <option value="" disabled selected hidden>Select a role</option>
                   <option value="Guest">Guest</option>
                   <option value="User">User</option>
                   <option value="Admin">Admin</option>
