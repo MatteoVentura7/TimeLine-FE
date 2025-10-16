@@ -99,7 +99,7 @@ export default function DashboardPage() {
               className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
               
             >
-              Create New User
+              Create New User <i class="fa-solid fa-plus"></i>
             </button>
           </div>
 
@@ -171,7 +171,7 @@ export default function DashboardPage() {
                             </button>
                             <button
                               onClick={() => handleViewDetails(user.id)}
-                              className="bg-purple-500 mr-2 text-white py-1 px-3 rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              className="bg-blue-500 mr-2 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
                             >
                               <i className="fa-solid fa-eye"></i> View Details
                             </button>

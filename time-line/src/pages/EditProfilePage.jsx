@@ -1,10 +1,11 @@
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
 import useEditProfile from "../hooks/useEditProfile";
 import LayoutDashboard from "../layout/layoutDashboard";
 
-export default function UserDetailsPage() {
+export default function EditProfilePage() {
   const { userId } = useParams();
   const { user, loading, error, setUser } = useDetails(userId);
 
@@ -24,14 +25,6 @@ export default function UserDetailsPage() {
     setEditedName,
     setEditedSurname,
     setEditedRole,
-    passwordPopup,
-    newPassword,
-    setNewPassword, 
-    confirmPassword,
-    setConfirmPassword,
-    handleChangePassword,
-    handleSavePassword,
-    closePasswordPopup,
   } = useEditProfile((updatedUser) => {
     // Aggiorna lo stato locale con i dati aggiornati
     setUser((prevUser) => ({
@@ -39,6 +32,31 @@ export default function UserDetailsPage() {
       ...updatedUser,
     }));
   });
+
+  const navigate = useNavigate();
+
+  const handleSaveAndRedirect = async () => {
+    await handleSave();
+    navigate("/dashboard");
+  };
+
+  const handleCancelAndRedirect = async () => {
+    await handleCancelEdit();
+    navigate("/dashboard");
+  };
+
+  useEffect(() => {
+    if (user) {
+      handleEdit(
+        user.id,
+        user.email,
+        user.isConfirmed,
+        user.name,
+        user.surname,
+        user.role
+      );
+    }
+  }, [user]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -84,46 +102,22 @@ export default function UserDetailsPage() {
               </div>
             )}
             <div className="flex justify-end">
-              {editingUser === user.id ? (
+            
                 <>
                   <button
-                    onClick={handleSave}
+                    onClick={handleSaveAndRedirect}
                     className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
                   >
                     Save
                   </button>
                   <button
-                    onClick={handleCancelEdit}
+                    onClick={handleCancelAndRedirect}
                     className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
                   >
                     Cancel
                   </button>
                 </>
-              ) : (
-                <>
-                  <button
-                    onClick={() =>
-                      handleEdit(
-                        user.id,
-                        user.email,
-                        user.isConfirmed,
-                        user.name,
-                        user.surname,
-                        user.role
-                      )
-                    }
-                    className="bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
-                  >
-                    <i className="fa-solid fa-pencil"></i> Edit
-                  </button>
-                  <button
-                    onClick={() => handleChangePassword(user.id)}
-                    className="bg-blue-500 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2"
-                  >
-                    <i className="fa-solid fa-key"></i> Change Password
-                  </button>
-                </>
-              )}
+             
             </div>
             <div className="mt-3 mb-3 text-gray-700 ">
               <p className="text-lg">
@@ -237,50 +231,7 @@ export default function UserDetailsPage() {
                 )}
               </span>
             </div>
-             {passwordPopup.visible && (
-        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md text-center">
-            <h3 className="mb-4 text-lg font-semibold">Change Password</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault(); // Impedisce l'invio del form
-                handleSavePassword(); // Chiama la funzione per salvare la password
-              }}
-            >
-              <input
-                type="password"
-                placeholder="New Password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-              />
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-              />
-              <div className="flex justify-center space-x-4">
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={closePasswordPopup}
-                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+             
           </div>
         </main>
       </div>

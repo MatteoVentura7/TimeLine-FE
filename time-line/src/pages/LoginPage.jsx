@@ -71,10 +71,12 @@ export default function LoginPage() {
       <div className="mb-3">
         <a
           href=""
-          className="text-blue-500 hover:underline"
-          onClick={() => navigate("/forgot-password")}
+          className={`text-blue-500 hover:underline ${
+            isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+          }`}
+          disabled={isLoading}
         >
-          Forgot Password?
+          {isLoading ? "" : "Forgot Password?"}
         </a>
       </div>
 
