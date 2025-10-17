@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
 import useEditProfile from "../hooks/useEditProfile";
 import LayoutDashboard from "../layout/layoutDashboard";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export default function EditProfilePage() {
   const { userId } = useParams();
@@ -34,9 +35,11 @@ export default function EditProfilePage() {
   });
 
   const navigate = useNavigate();
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleSaveAndRedirect = async () => {
     console.log("Inizio salvataggio profilo...");
+    setIsSaving(true);
     const saveResult = await handleSave();
 
     console.log("Risultato salvataggio:", saveResult);
@@ -46,18 +49,26 @@ export default function EditProfilePage() {
       console.log("Salvataggio riuscito, reindirizzamento alla dashboard...");
       setTimeout(() => {
         navigate("/dashboard");
+        setIsSaving(false);
       }, 2000);
     } else {
       console.error(
         "Errore durante il salvataggio: ",
         saveResult?.message || "Errore sconosciuto"
       );
+      console.error(
+        "Errore durante il salvataggio: " +
+          (saveResult?.message || "Errore sconosciuto")
+      );
+      setIsSaving(false);
     }
   };
 
   const handleCancelAndRedirect = async () => {
+    setIsSaving(true);
     await handleCancelEdit();
     navigate("/dashboard");
+    setIsSaving(false);
   };
 
   useEffect(() => {
@@ -74,7 +85,11 @@ export default function EditProfilePage() {
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <PropagateLoader />
+      </div>
+    );
   }
 
   if (error) {
@@ -122,13 +137,19 @@ export default function EditProfilePage() {
               <>
                 <button
                   onClick={handleSaveAndRedirect}
-                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
+                  disabled={isSaving}
+                  className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
+                    isSaving ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
-                  Save
+                  {isSaving ? "Saving..." : "Save"}
                 </button>
                 <button
                   onClick={handleCancelAndRedirect}
-                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                  disabled={isSaving}
+                  className={`bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+                    isSaving ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   Back
                 </button>
@@ -215,8 +236,12 @@ export default function EditProfilePage() {
                     }
                     className="border border-gray-300 rounded-md px-2 py-1"
                   >
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
+                    <option value={user.isConfirmed}>
+                      {user.isConfirmed ? "Yes" : "No"}
+                    </option>
+                    <option value={!user.isConfirmed}>
+                      {!user.isConfirmed ? "Yes" : "No"}
+                    </option>
                   </select>
                 ) : user.isConfirmed ? (
                   "Yes"

@@ -1,12 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
 import Sidebar from "../components/sidebar";
 import useDetails from "../hooks/useDetails";
 import useEditProfile from "../hooks/useEditProfile";
 import LayoutDashboard from "../layout/layoutDashboard";
+import PropagateLoader from "react-spinners/PropagateLoader";
 
 export default function UserDetailsPage() {
   const { userId } = useParams();
   const { user, loading, error, setUser } = useDetails(userId);
+  const [isSaving, setIsSaving] = useState(false);
 
   const {
     editingUser,
@@ -26,7 +29,7 @@ export default function UserDetailsPage() {
     setEditedRole,
     passwordPopup,
     newPassword,
-    setNewPassword, 
+    setNewPassword,
     confirmPassword,
     setConfirmPassword,
     handleChangePassword,
@@ -40,8 +43,31 @@ export default function UserDetailsPage() {
     }));
   });
 
+  const handleSaveWithState = async () => {
+    setIsSaving(true);
+    await handleSave();
+    setIsSaving(false);
+  };
+
+  const handleCancelWithState = async () => {
+    setIsSaving(true);
+    await handleCancelEdit();
+    setIsSaving(false);
+  };
+
+  const handleSavePasswordWithState = async (e) => {
+    e.preventDefault(); // Impedisce l'invio del form
+    setIsSaving(true);
+    await handleSavePassword();
+    setIsSaving(false);
+  };
+
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <PropagateLoader />
+      </div>
+    );
   }
 
   if (error) {
@@ -71,7 +97,9 @@ export default function UserDetailsPage() {
         <LayoutDashboard />
         <main className="py-12 px-6 bg-gray-50 ">
           <div className="bg-white  p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">User Information</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">
+              User Information
+            </h2>
             {statusMessage && (
               <div
                 className={`p-4 rounded-md mb-4 ${
@@ -87,14 +115,20 @@ export default function UserDetailsPage() {
               {editingUser === user.id ? (
                 <>
                   <button
-                    onClick={handleSave}
-                    className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
+                    onClick={handleSaveWithState}
+                    disabled={isSaving}
+                    className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
+                      isSaving ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    Save
+                    {isSaving ? "Saving..." : "Save"}
                   </button>
                   <button
-                    onClick={handleCancelEdit}
-                    className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                    onClick={handleCancelWithState}
+                    disabled={isSaving}
+                    className={`bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+                      isSaving ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
                     Cancel
                   </button>
@@ -154,7 +188,7 @@ export default function UserDetailsPage() {
             <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Surname</strong>{" "}
-               </p>
+              </p>
               <span className="text-xl">
                 {editingUser === user.id ? (
                   <input
@@ -191,7 +225,7 @@ export default function UserDetailsPage() {
                 )}
               </span>
             </div>
-            
+
             <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Confirmed email</strong>{" "}
@@ -206,8 +240,12 @@ export default function UserDetailsPage() {
                     }
                     className="border border-gray-300 rounded-md px-2 py-1"
                   >
-                    <option value="false">No</option>
-                    <option value="true">Yes</option>
+                    <option value={user.isConfirmed}>
+                      {user.isConfirmed ? "Yes" : "No"}
+                    </option>
+                    <option value={!user.isConfirmed}>
+                      {!user.isConfirmed ? "Yes" : "No"}
+                    </option>
                   </select>
                 ) : user.isConfirmed ? (
                   "Yes"
@@ -237,50 +275,53 @@ export default function UserDetailsPage() {
                 )}
               </span>
             </div>
-             {passwordPopup.visible && (
-        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md text-center">
-            <h3 className="mb-4 text-lg font-semibold">Change Password</h3>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault(); // Impedisce l'invio del form
-                handleSavePassword(); // Chiama la funzione per salvare la password
-              }}
-            >
-              <input
-                type="password"
-                placeholder="New Password"
-                required
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-              />
-              <input
-                type="password"
-                placeholder="Confirm Password"
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
-              />
-              <div className="flex justify-center space-x-4">
-                <button
-                  type="submit"
-                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={closePasswordPopup}
-                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                >
-                  Cancel
-                </button>
+            {passwordPopup.visible && (
+              <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
+                <div className="bg-white p-6 rounded shadow-md text-center">
+                  <h3 className="mb-4 text-lg font-semibold">
+                    Change Password
+                  </h3>
+                  <form onSubmit={handleSavePasswordWithState}>
+                    <input
+                      type="password"
+                      placeholder="New Password"
+                      required
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+                    />
+                    <input
+                      type="password"
+                      placeholder="Confirm Password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="border border-gray-300 rounded-md px-2 py-1 mb-4 w-full"
+                    />
+                    <div className="flex justify-center space-x-4">
+                      <button
+                        type="submit"
+                        disabled={isSaving}
+                        className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 ${
+                          isSaving ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {isSaving ? "Saving..." : "Save"}
+                      </button>
+                      <button
+                        onClick={closePasswordPopup}
+                        disabled={isSaving}
+                        className={`bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+                          isSaving ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </form>
-          </div>
-        </div>
-      )}
+            )}
           </div>
         </main>
       </div>
