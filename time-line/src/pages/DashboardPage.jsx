@@ -11,6 +11,31 @@ export default function DashboardPage() {
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
   const [statusMessage, setStatusMessage] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const usersPerPage = 5;
+
+  const totalPages = Math.ceil(users.length / usersPerPage);
+
+  const displayedUsers = users.slice(
+    currentPage * usersPerPage,
+    (currentPage + 1) * usersPerPage
+  );
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageClick = (pageIndex) => {
+    setCurrentPage(pageIndex);
+  };
 
   useEffect(() => {
     axios
@@ -132,7 +157,7 @@ export default function DashboardPage() {
                 </tr>
               </thead>
               <tbody>
-                {users.map((user) => (
+                {displayedUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-100">
                     <td className="px-4 py-2 border border-gray-300">
                       {user.id}
@@ -184,6 +209,41 @@ export default function DashboardPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+          <div className="flex justify-center mt-4 space-x-2">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 0}
+              className={`py-2 px-4 rounded-md ${
+                currentPage === 0 ? "bg-gray-300" : "bg-blue-500 text-white"
+              }`}
+            >
+              Previous
+            </button>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageClick(index)}
+                className={`py-2 px-4 rounded-md ${
+                  currentPage === index
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+              >
+                {index + 1}
+              </button>
+            ))}
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages - 1}
+              className={`py-2 px-4 rounded-md ${
+                currentPage === totalPages - 1
+                  ? "bg-gray-300"
+                  : "bg-blue-500 text-white"
+              }`}
+            >
+              Next
+            </button>
           </div>
         </main>
       </div>
