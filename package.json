@@ -5,6 +5,7 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.3",
+    "react-spinners": "^0.17.0",
     "routes": "^2.1.0",
     "tailwindcss": "^4.1.13"
   },

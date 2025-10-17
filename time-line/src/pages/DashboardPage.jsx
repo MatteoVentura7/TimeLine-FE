@@ -11,7 +11,6 @@ export default function DashboardPage() {
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
   const [statusMessage, setStatusMessage] = useState(null);
-  
 
   useEffect(() => {
     axios
@@ -39,12 +38,10 @@ export default function DashboardPage() {
     navigate("/dashboard/create-user");
   };
 
- 
-   const handleEdit = (userId) => {
+  const handleEdit = (userId) => {
     navigate(`/dashboard/edit-profile/${userId}`);
   };
 
- 
   /* Gestione della cancellazione di un utente */
   const confirmDelete = (userId) => {
     setPopup({ visible: true, userId });
@@ -56,12 +53,18 @@ export default function DashboardPage() {
       const success = await deleteUser(userId);
       if (success) {
         setUsers(users.filter((user) => user.id !== userId));
-        setStatusMessage({ type: "success", text: "User deleted successfully." });
+        setStatusMessage({
+          type: "success",
+          text: "User deleted successfully.",
+        });
       } else {
         setStatusMessage({ type: "error", text: "Failed to delete user." });
       }
     } catch (error) {
-      setStatusMessage({ type: "error", text: "An unexpected error occurred." });
+      setStatusMessage({
+        type: "error",
+        text: "An unexpected error occurred.",
+      });
     }
     setPopup({ visible: false, userId: null });
   };
@@ -70,7 +73,6 @@ export default function DashboardPage() {
     setPopup({ visible: false, userId: null });
   };
 
-
   /* Gestione della visualizzazione dei dettagli dell'utente */
   const handleViewDetails = (userId) => {
     navigate(`/dashboard/user-details/${userId}`);
@@ -78,7 +80,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
-      <Sidebar title = "Dashboard" />
+      <Sidebar title="Dashboard" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         <main className="w-full container mx-auto py-8 px-4">
@@ -97,9 +99,8 @@ export default function DashboardPage() {
             <button
               onClick={handleCreateUser}
               className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mb-5"
-              
             >
-              Create New User <i class="fa-solid fa-plus"></i>
+              Create New User <i className="fa-solid fa-plus"></i>
             </button>
           </div>
 
@@ -107,7 +108,9 @@ export default function DashboardPage() {
             <table className="min-w-full table-auto border-collapse border border-gray-300">
               <thead className="bg-gray-200">
                 <tr>
-                  <th className="px-4 py-2 border border-gray-300 text-left">ID</th>
+                  <th className="px-4 py-2 border border-gray-300 text-left">
+                    ID
+                  </th>
                   <th className="px-4 py-2 border border-gray-300 text-left">
                     Name
                   </th>
@@ -135,56 +138,46 @@ export default function DashboardPage() {
                       {user.id}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
-                      {user.name.charAt(0).toUpperCase() + user.name.slice(1)}
+                      {user.name?.charAt(0).toUpperCase() + user.name?.slice(1)}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
-                      {user.surname.charAt(0).toUpperCase() + user.surname.slice(1)}
+                      {user.surname?.charAt(0).toUpperCase() +
+                        user.surname?.slice(1)}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
                       {user.email}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
-
                       {user.isConfirmed ? "Yes" : "No"}
                     </td>
                     <td className="px-4 py-2 border border-gray-300">
                       {user.role}
                     </td>
-                    
+
                     <td className="px-4 py-2 border border-gray-300">
-                      
                       <div className="flex justify-end">
-                         
-                        
-                          <>
-                            <button
-                              onClick={() =>
-                                handleEdit(
-                                  user.id,
-                                  user.email,
-                                  user.isConfirmed
-                                )
-                              }
-                              className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
-                            >
-                              <i className="fa-solid fa-pencil"></i> Edit
-                            </button>
-                            <button
-                              onClick={() => handleViewDetails(user.id)}
-                              className="bg-blue-500 mr-2 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                            >
-                              <i className="fa-solid fa-eye"></i> View Details
-                            </button>
-                            <button
-                              onClick={() => confirmDelete(user.id)}
-                              className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mr-2"
-                              
-                            >
-                              <i className="fa-solid fa-trash"></i> Delete
-                            </button>
-                           
-                          </>
-                        
+                        <>
+                          <button
+                            onClick={() =>
+                              handleEdit(user.id, user.email, user.isConfirmed)
+                            }
+                            className="bg-yellow-500 text-white py-1 px-3 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 mr-2"
+                          >
+                            <i className="fa-solid fa-pencil"></i> Edit
+                          </button>
+                          <button
+                            onClick={() => handleViewDetails(user.id)}
+                            className="bg-blue-500 mr-2 text-white py-1 px-3 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          >
+                            <i className="fa-solid fa-eye"></i> View Details
+                          </button>
+                          <button
+                            onClick={() => confirmDelete(user.id)}
+                            className="bg-red-500 text-white py-1 px-3 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 mr-2"
+                          >
+                            <i className="fa-solid fa-trash"></i> Delete
+                          </button>
+                        </>
                       </div>
                     </td>
                   </tr>

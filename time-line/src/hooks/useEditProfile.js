@@ -34,11 +34,11 @@ const useEditProfile = (onProfileUpdate) => {
   };
 
   const handleSave = async () => {
-    if (!editingUser) return;
+    if (!editingUser) return { success: false, message: "No user is being edited." };
 
     if (!validateEmail(editedEmail)) {
       setStatusMessage({ type: "error", text: "Insert a valid email." });
-      return;
+      return { success: false, message: "Invalid email." };
     }
 
     try {
@@ -70,12 +70,15 @@ const useEditProfile = (onProfileUpdate) => {
       setEditedName("");
       setEditedSurname("");
       setEditedRole("");
+      return { success: true, message: response.data.message };
     } catch (error) {
       console.error("Error during profile update:", error);
       if (error.response) {
         setStatusMessage({ type: "error", text: error.response.data.error });
+        return { success: false, message: error.response.data.error };
       } else {
         setStatusMessage({ type: "error", text: "Unexpected error." });
+        return { success: false, message: "Unexpected error." };
       }
     }
   };

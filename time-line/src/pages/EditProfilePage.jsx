@@ -36,8 +36,23 @@ export default function EditProfilePage() {
   const navigate = useNavigate();
 
   const handleSaveAndRedirect = async () => {
-    await handleSave();
-    navigate("/dashboard");
+    console.log("Inizio salvataggio profilo...");
+    const saveResult = await handleSave();
+
+    console.log("Risultato salvataggio:", saveResult);
+    console.log("StatusMessage corrente:", statusMessage);
+
+    if (saveResult && saveResult.success) {
+      console.log("Salvataggio riuscito, reindirizzamento alla dashboard...");
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } else {
+      console.error(
+        "Errore durante il salvataggio: ",
+        saveResult?.message || "Errore sconosciuto"
+      );
+    }
   };
 
   const handleCancelAndRedirect = async () => {
@@ -89,7 +104,9 @@ export default function EditProfilePage() {
         <LayoutDashboard />
         <main className="py-12 px-6 bg-gray-50 ">
           <div className="bg-white  p-6">
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">User Information</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">
+              User Information
+            </h2>
             {statusMessage && (
               <div
                 className={`p-4 rounded-md mb-4 ${
@@ -102,22 +119,20 @@ export default function EditProfilePage() {
               </div>
             )}
             <div className="flex justify-end">
-            
-                <>
-                  <button
-                    onClick={handleSaveAndRedirect}
-                    className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
-                  >
-                    Save
-                  </button>
-                  <button
-                    onClick={handleCancelAndRedirect}
-                    className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-                  >
-                    Back
-                  </button>
-                </>
-             
+              <>
+                <button
+                  onClick={handleSaveAndRedirect}
+                  className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancelAndRedirect}
+                  className="bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  Back
+                </button>
+              </>
             </div>
             <div className="mt-3 mb-3 text-gray-700 ">
               <p className="text-lg">
@@ -148,7 +163,7 @@ export default function EditProfilePage() {
             <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Surname</strong>{" "}
-               </p>
+              </p>
               <span className="text-xl">
                 {editingUser === user.id ? (
                   <input
@@ -185,7 +200,7 @@ export default function EditProfilePage() {
                 )}
               </span>
             </div>
-            
+
             <div className="mt-3 mb-3 text-gray-700">
               <p className="text-lg">
                 <strong>Confirmed email</strong>{" "}
@@ -231,7 +246,6 @@ export default function EditProfilePage() {
                 )}
               </span>
             </div>
-             
           </div>
         </main>
       </div>
