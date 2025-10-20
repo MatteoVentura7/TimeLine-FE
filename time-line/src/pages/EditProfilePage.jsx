@@ -36,8 +36,41 @@ export default function EditProfilePage() {
 
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
+  const [isModified, setIsModified] = useState(false);
+
+  const handleFieldChange = (setter) => (e) => {
+    setter(e.target.value);
+    setIsModified(true);
+  };
+
+  const handleEmailChange = handleFieldChange(setEditedEmail);
+  const handleNameChange = handleFieldChange(setEditedName);
+  const handleSurnameChange = handleFieldChange(setEditedSurname);
+  const handleRoleChange = handleFieldChange(setEditedRole);
+
+  const handleSaveWithoutRedirect = async () => {
+    if (!isModified) return;
+    console.log("Inizio salvataggio profilo...");
+    setIsSaving(true);
+    const saveResult = await handleSave();
+
+    console.log("Risultato salvataggio:", saveResult);
+    console.log("StatusMessage corrente:", statusMessage);
+
+    if (saveResult && saveResult.success) {
+      console.log("Salvataggio riuscito.");
+      setIsModified(false);
+    } else {
+      console.error(
+        "Errore durante il salvataggio: ",
+        saveResult?.message || "Errore sconosciuto"
+      );
+    }
+    setIsSaving(false);
+  };
 
   const handleSaveAndRedirect = async () => {
+    if (!isModified) return;
     console.log("Inizio salvataggio profilo...");
     setIsSaving(true);
     const saveResult = await handleSave();
@@ -51,14 +84,11 @@ export default function EditProfilePage() {
         navigate("/dashboard");
         setIsSaving(false);
       }, 2000);
+      setIsModified(false);
     } else {
       console.error(
         "Errore durante il salvataggio: ",
         saveResult?.message || "Errore sconosciuto"
-      );
-      console.error(
-        "Errore durante il salvataggio: " +
-          (saveResult?.message || "Errore sconosciuto")
       );
       setIsSaving(false);
     }
@@ -96,35 +126,19 @@ export default function EditProfilePage() {
     return <div>{error}</div>;
   }
 
-  const handleEmailChange = (e) => {
-    setEditedEmail(e.target.value);
-  };
-
-  const handleNameChange = (e) => {
-    setEditedName(e.target.value);
-  };
-
-  const handleSurnameChange = (e) => {
-    setEditedSurname(e.target.value);
-  };
-
-  const handleRoleChange = (e) => {
-    setEditedRole(e.target.value);
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar title="User Edit" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
-        <main className="py-12 px-6 bg-gray-50 ">
+        <main className=" px-6 bg-gray-50 ">
           <div className="bg-white  p-6">
             <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">
               User Information
             </h2>
             {statusMessage && (
               <div
-                className={`p-4 rounded-md mb-4 ${
+                className={` fixed top-64 right-90 w-fit p-3  rounded-md mb-4 ${
                   statusMessage.type === "error"
                     ? "bg-red-100 text-red-700"
                     : "bg-green-100 text-green-700"
@@ -136,13 +150,22 @@ export default function EditProfilePage() {
             <div className="flex justify-end">
               <>
                 <button
-                  onClick={handleSaveAndRedirect}
-                  disabled={isSaving}
+                  onClick={handleSaveWithoutRedirect}
+                  disabled={isSaving || !isModified}
                   className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
-                    isSaving ? "opacity-50 cursor-not-allowed" : ""
+                    isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
                   {isSaving ? "Saving..." : "Save"}
+                </button>
+                <button
+                  onClick={handleSaveAndRedirect}
+                  disabled={isSaving || !isModified}
+                  className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
+                    isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {isSaving ? "Saving..." : "Save and Back"}
                 </button>
                 <button
                   onClick={handleCancelAndRedirect}
@@ -171,6 +194,7 @@ export default function EditProfilePage() {
                     type="text"
                     id="Name"
                     name="Name"
+                    disabled={isSaving}
                     required
                     value={editedName}
                     onChange={handleNameChange}
@@ -190,6 +214,7 @@ export default function EditProfilePage() {
                   <input
                     type="text"
                     id="Surname"
+                    disabled={isSaving}
                     name="Surname"
                     required
                     value={editedSurname}
@@ -207,15 +232,23 @@ export default function EditProfilePage() {
               </p>
               <span className="text-xl">
                 {editingUser === user.id ? (
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={editedEmail}
-                    onChange={handleEmailChange}
-                    className="border border-gray-300 rounded-md px-2 py-1"
-                  />
+                  <>
+                    <input
+                      type="email"
+                      id="email"
+                      disabled={isSaving}
+                      name="email"
+                      required
+                      value={editedEmail}
+                      onChange={handleEmailChange}
+                      className="border border-gray-300 rounded-md px-2 py-1"
+                    />
+                    {statusMessage && statusMessage.type === "error" && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {statusMessage.text}
+                      </p>
+                    )}
+                  </>
                 ) : (
                   user.email
                 )}
@@ -231,6 +264,7 @@ export default function EditProfilePage() {
                 {editingUser === user.id ? (
                   <select
                     value={editedIsConfirmed}
+                    disabled={isSaving}
                     onChange={(e) =>
                       setEditedIsConfirmed(e.target.value === "true")
                     }
@@ -260,6 +294,7 @@ export default function EditProfilePage() {
                   <select
                     value={editedRole}
                     onChange={handleRoleChange}
+                    disabled={isSaving}
                     className="border border-gray-300 rounded-md px-2 py-1"
                   >
                     <option value="Admin">Admin</option>

@@ -10,6 +10,7 @@ export default function UserDetailsPage() {
   const { userId } = useParams();
   const { user, loading, error, setUser } = useDetails(userId);
   const [isSaving, setIsSaving] = useState(false);
+  const [isModified, setIsModified] = useState(false);
 
   const {
     editingUser,
@@ -43,10 +44,22 @@ export default function UserDetailsPage() {
     }));
   });
 
+  const handleFieldChange = (setter) => (e) => {
+    setter(e.target.value);
+    setIsModified(true);
+  };
+
+  const handleEmailChange = handleFieldChange(setEditedEmail);
+  const handleNameChange = handleFieldChange(setEditedName);
+  const handleSurnameChange = handleFieldChange(setEditedSurname);
+  const handleRoleChange = handleFieldChange(setEditedRole);
+
   const handleSaveWithState = async () => {
+    if (!isModified) return;
     setIsSaving(true);
     await handleSave();
     setIsSaving(false);
+    setIsModified(false);
   };
 
   const handleCancelWithState = async () => {
@@ -74,28 +87,12 @@ export default function UserDetailsPage() {
     return <div>{error}</div>;
   }
 
-  const handleEmailChange = (e) => {
-    setEditedEmail(e.target.value);
-  };
-
-  const handleNameChange = (e) => {
-    setEditedName(e.target.value);
-  };
-
-  const handleSurnameChange = (e) => {
-    setEditedSurname(e.target.value);
-  };
-
-  const handleRoleChange = (e) => {
-    setEditedRole(e.target.value);
-  };
-
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar title="User Edit" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
-        <main className="py-12 px-6 bg-gray-50 ">
+        <main className=" px-6 bg-gray-50 ">
           <div className="bg-white  p-6">
             <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">
               User Information
@@ -116,9 +113,9 @@ export default function UserDetailsPage() {
                 <>
                   <button
                     onClick={handleSaveWithState}
-                    disabled={isSaving}
+                    disabled={isSaving || !isModified}
                     className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
-                      isSaving ? "opacity-50 cursor-not-allowed" : ""
+                      isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
                     }`}
                   >
                     {isSaving ? "Saving..." : "Save"}
@@ -175,6 +172,7 @@ export default function UserDetailsPage() {
                     type="text"
                     id="Name"
                     name="Name"
+                    disabled={isSaving}
                     required
                     value={editedName}
                     onChange={handleNameChange}
@@ -195,6 +193,7 @@ export default function UserDetailsPage() {
                     type="text"
                     id="Surname"
                     name="Surname"
+                    disabled={isSaving}
                     required
                     value={editedSurname}
                     onChange={handleSurnameChange}
@@ -214,6 +213,7 @@ export default function UserDetailsPage() {
                   <input
                     type="email"
                     id="email"
+                    disabled={isSaving}
                     name="email"
                     required
                     value={editedEmail}
@@ -235,6 +235,7 @@ export default function UserDetailsPage() {
                 {editingUser === user.id ? (
                   <select
                     value={editedIsConfirmed}
+                    disabled={isSaving}
                     onChange={(e) =>
                       setEditedIsConfirmed(e.target.value === "true")
                     }
@@ -263,6 +264,7 @@ export default function UserDetailsPage() {
                 {editingUser === user.id ? (
                   <select
                     value={editedRole}
+                    disabled={isSaving}
                     onChange={handleRoleChange}
                     className="border border-gray-300 rounded-md px-2 py-1"
                   >
