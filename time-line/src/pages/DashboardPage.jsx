@@ -1,16 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [users, setUsers] = useState([]);
   const [popup, setPopup] = useState({ visible: false, userId: null });
   const { deleteUser, isDeleting } = useDeleteUser();
-  const [statusMessage, setStatusMessage] = useState(null);
+  const [statusMessage, setStatusMessage] = useState(
+    location.state?.successMessage
+      ? {
+          type: "success",
+          text: location.state.successMessage,
+        }
+      : null
+  );
   const [currentPage, setCurrentPage] = useState(0);
   const usersPerPage = 5;
 

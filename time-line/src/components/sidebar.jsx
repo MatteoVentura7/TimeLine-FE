@@ -10,7 +10,7 @@ export default function Sidebar({ title = "Sidebar" }) {
   };
 
   return (
-    <div className="flex flex-col w-64 bg-gray-800 h-screen">
+    <div className="flex flex-col w-64 bg-gray-800 min-h-screen">
       <div className="flex items-center justify-center h-31 bg-gray-900">
         <span className="text-white font-bold uppercase">{title}</span>
       </div>

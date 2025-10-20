@@ -80,10 +80,14 @@ export default function EditProfilePage() {
 
     if (saveResult && saveResult.success) {
       console.log("Salvataggio riuscito, reindirizzamento alla dashboard...");
-      setTimeout(() => {
-        navigate("/dashboard");
+      
+        navigate("/dashboard", {
+          state: {
+            successMessage: statusMessage?.text || "Profile updated successfully!",
+          },
+        });
         setIsSaving(false);
-      }, 2000);
+       
       setIsModified(false);
     } else {
       console.error(
@@ -138,7 +142,7 @@ export default function EditProfilePage() {
             </h2>
             {statusMessage && (
               <div
-                className={` fixed top-64 right-90 w-fit p-3  rounded-md mb-4 ${
+                className={` fixed bottom-10 right-10 w-fit p-3  shadow-md  rounded-md mb-4 ${
                   statusMessage.type === "error"
                     ? "bg-red-100 text-red-700"
                     : "bg-green-100 text-green-700"
@@ -161,7 +165,7 @@ export default function EditProfilePage() {
                 <button
                   onClick={handleSaveAndRedirect}
                   disabled={isSaving || !isModified}
-                  className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
+                  className={`bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${
                     isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                 >
