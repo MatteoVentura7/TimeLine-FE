@@ -11,6 +11,7 @@ export default function useDetails(userId) {
       .get(`http://localhost:3000/users/${userId}`)
       .then((response) => {
         setUser(response.data);
+        localStorage.setItem("id", response.data.id); // Salva l'ID utente
         setLoading(false);
       })
       .catch(() => {

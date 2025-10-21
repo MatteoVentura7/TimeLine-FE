@@ -89,7 +89,7 @@ export default function UserDetailsPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
-      <Sidebar title="User Edit" />
+      <Sidebar title="User Details" />
       <div className="flex-1 flex flex-col">
         <LayoutDashboard />
         <main className=" px-6 bg-gray-50 ">
@@ -115,7 +115,9 @@ export default function UserDetailsPage() {
                     onClick={handleSaveWithState}
                     disabled={isSaving || !isModified}
                     className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
-                      isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
+                      isSaving || !isModified
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
                     }`}
                   >
                     {isSaving ? "Saving..." : "Save"}
