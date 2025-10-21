@@ -23,21 +23,33 @@ export default function useLogin() {
         password: passwordRef.current,
         role: roleRef.current, // Includi il ruolo nella richiesta
         name: nameRef.current, // Includi il nome nella richiesta
-        surname: surnameRef.current, // Includi il cognome nella richiesta  
+        surname: surnameRef.current, // Includi il cognome nella richiesta
       })
       .then((response) => {
         setLoginResult(response.data.message);
+        localStorage.setItem("email", emailRef.current); // Salva l'email
         localStorage.setItem("token", response.data.token); // Salva il token
         localStorage.setItem("role", response.data.role); // Salva il ruolo
         localStorage.setItem("id", response.data.id); // Salva l'ID utente
         localStorage.setItem("name", response.data.name); // Salva il nome
         localStorage.setItem("surname", response.data.surname); // Salva il cognome
-        console.log("Login successful, " + response.data.token + " role: " + response.data.role + " id: " + response.data.id + " name: " + response.data.name + " surname: " + response.data.surname);
+        console.log(
+          "Login successful, " +
+            response.data.token +
+            " role: " +
+            response.data.role +
+            " id: " +
+            response.data.id +
+            " name: " +
+            response.data.name +
+            " surname: " +
+            response.data.surname +
+            " email: " +
+            emailRef.current
+        );
 
-      
-          setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
-          navigate("/dashboard");
-        
+        setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
+        navigate("/dashboard");
       })
       .catch((error) => {
         if (error.response) {
@@ -54,5 +66,5 @@ export default function useLogin() {
       });
   };
 
-  return { emailRef, passwordRef, loginResult, login, isLoading, roleRef};
+  return { emailRef, passwordRef, loginResult, login, isLoading, roleRef };
 }

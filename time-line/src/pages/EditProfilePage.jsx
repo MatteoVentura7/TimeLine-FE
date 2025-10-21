@@ -48,8 +48,18 @@ export default function EditProfilePage() {
   const handleSurnameChange = handleFieldChange(setEditedSurname);
   const handleRoleChange = handleFieldChange(setEditedRole);
 
+  const areValuesUnchanged = () => {
+    return (
+      editedEmail === user.email &&
+      editedName === user.name &&
+      editedSurname === user.surname &&
+      editedRole === user.role &&
+      editedIsConfirmed === user.isConfirmed
+    );
+  };
+
   const handleSaveWithoutRedirect = async () => {
-    if (!isModified) return;
+    if (!isModified || areValuesUnchanged()) return;
     console.log("Inizio salvataggio profilo...");
     setIsSaving(true);
     const saveResult = await handleSave();
@@ -70,7 +80,7 @@ export default function EditProfilePage() {
   };
 
   const handleSaveAndRedirect = async () => {
-    if (!isModified) return;
+    if (!isModified || areValuesUnchanged()) return;
     console.log("Inizio salvataggio profilo...");
     setIsSaving(true);
     const saveResult = await handleSave();
@@ -80,14 +90,14 @@ export default function EditProfilePage() {
 
     if (saveResult && saveResult.success) {
       console.log("Salvataggio riuscito, reindirizzamento alla dashboard...");
-      
-        navigate("/dashboard", {
-          state: {
-            successMessage: statusMessage?.text || "Profile updated successfully!",
-          },
-        });
-        setIsSaving(false);
-       
+      navigate("/dashboard", {
+        state: {
+          successMessage:
+            statusMessage?.text || "Profile updated successfully!",
+        },
+      });
+      setIsSaving(false);
+
       setIsModified(false);
     } else {
       console.error(
@@ -155,18 +165,22 @@ export default function EditProfilePage() {
               <>
                 <button
                   onClick={handleSaveWithoutRedirect}
-                  disabled={isSaving || !isModified}
+                  disabled={isSaving || !isModified || areValuesUnchanged()}
                   className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
-                    isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
+                    isSaving || !isModified || areValuesUnchanged()
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                 >
                   {isSaving ? "Saving..." : "Save"}
                 </button>
                 <button
                   onClick={handleSaveAndRedirect}
-                  disabled={isSaving || !isModified}
+                  disabled={isSaving || !isModified || areValuesUnchanged()}
                   className={`bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 mr-2 ${
-                    isSaving || !isModified ? "opacity-50 cursor-not-allowed" : ""
+                    isSaving || !isModified || areValuesUnchanged()
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
                   }`}
                 >
                   {isSaving ? "Saving..." : "Save and Back"}

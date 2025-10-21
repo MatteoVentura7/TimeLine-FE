@@ -75,6 +75,16 @@ export default function UserDetailsPage() {
     setIsSaving(false);
   };
 
+  const areValuesUnchanged = () => {
+    return (
+      editedEmail === user.email &&
+      editedName === user.name &&
+      editedSurname === user.surname &&
+      editedRole === user.role &&
+      editedIsConfirmed === user.isConfirmed
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -113,9 +123,9 @@ export default function UserDetailsPage() {
                 <>
                   <button
                     onClick={handleSaveWithState}
-                    disabled={isSaving || !isModified}
+                    disabled={isSaving || !isModified || areValuesUnchanged()}
                     className={`bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 mr-2 ${
-                      isSaving || !isModified
+                      isSaving || !isModified || areValuesUnchanged()
                         ? "opacity-50 cursor-not-allowed"
                         : ""
                     }`}

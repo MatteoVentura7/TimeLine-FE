@@ -1,25 +1,14 @@
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
-import { useEffect } from "react";
-import useDetails from "../hooks/useDetails";
 
 const ProfilePage = () => {
-  const Id = localStorage.getItem("id");
-  const { user, loading, error } = useDetails(Id);
+  const name = localStorage.getItem("name") || "";
+  const surname = localStorage.getItem("surname") || "";
+  const email = localStorage.getItem("email") || "";
+  const role = localStorage.getItem("role") || "";
 
-  useEffect(() => {
-    if (error) {
-      console.error("Errore nel recupero dei dettagli utente:", error);
-    }
-  }, [error]);
-
-  if (loading) {
-    return <div>Caricamento...</div>;
-  }
-
-  if (!user) {
-    return <div>Nessun utente trovato.</div>;
-  }
+  const capitalize = (str) =>
+    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
@@ -32,16 +21,20 @@ const ProfilePage = () => {
               Profile
             </h2>
             <p className="mb-4">
-              <strong>Nome:</strong> {user.name}
+              <strong>Name:</strong>{" "}
+              <span className="text-gray-700">{capitalize(name)}</span>
             </p>
             <p className="mb-4">
-              <strong>Cognome:</strong> {user.surname}
+              <strong>Surname:</strong>{" "}
+              <span className="text-gray-700">{capitalize(surname)}</span>
             </p>
             <p className="mb-4">
-              <strong>Email:</strong> {user.email}
+              <strong>Email:</strong>{" "}
+              <span className="text-gray-700">{email}</span>
             </p>
             <p className="mb-4">
-              <strong>Ruolo:</strong> {user.role}
+              <strong>Role:</strong>{" "}
+              <span className="text-gray-700">{role}</span>
             </p>
           </div>
         </main>
