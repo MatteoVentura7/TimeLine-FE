@@ -43,6 +43,7 @@ export default function UserDetailsPage() {
       ...updatedUser,
     }));
   });
+  const navigate = useNavigate();
 
   const handleFieldChange = (setter) => (e) => {
     setter(e.target.value);
@@ -72,6 +73,13 @@ export default function UserDetailsPage() {
     e.preventDefault(); // Impedisce l'invio del form
     setIsSaving(true);
     await handleSavePassword();
+    setIsSaving(false);
+  };
+
+    const handleCancelAndRedirect = async () => {
+    setIsSaving(true);
+    await handleCancelEdit();
+    navigate("/dashboard");
     setIsSaving(false);
   };
 
@@ -165,6 +173,15 @@ export default function UserDetailsPage() {
                   >
                     <i className="fa-solid fa-key"></i> Change Password
                   </button>
+                     <button
+                  onClick={handleCancelAndRedirect}
+                  disabled={isSaving}
+                  className={`bg-gray-300 text-black py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 ${
+                    isSaving ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Back
+                </button>
                 </>
               )}
             </div>

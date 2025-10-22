@@ -34,8 +34,8 @@ export default function LayoutDashboard() {
         <div className="flex space-x-4 items-center">
           <span className="text-gray-700">{welcomeMessage}</span>
           <div className="relative">
-            <span onClick={toggleDropdown} className="cursor-pointer">
-              <i className="fa-solid fa-user text-2xl"></i>
+            <span onClick={toggleDropdown} className="cursor-pointer hover:text-gray-500 text-3xl">
+              <i class="fa-solid fa-circle-user"></i>
             </span>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md">

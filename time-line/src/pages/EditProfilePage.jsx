@@ -54,8 +54,13 @@ export default function EditProfilePage() {
       editedName === user.name &&
       editedSurname === user.surname &&
       editedRole === user.role &&
-      editedIsConfirmed === user.isConfirmed
+      editedIsConfirmed === Boolean(user.isConfirmed) // Ensure type consistency
     );
+  };
+
+  const handleIsConfirmedChange = (e) => {
+    setEditedIsConfirmed(e.target.value === "true");
+    setIsModified(true); // Ensure modification state is updated
   };
 
   const handleSaveWithoutRedirect = async () => {
@@ -283,9 +288,7 @@ export default function EditProfilePage() {
                   <select
                     value={editedIsConfirmed}
                     disabled={isSaving}
-                    onChange={(e) =>
-                      setEditedIsConfirmed(e.target.value === "true")
-                    }
+                    onChange={handleIsConfirmedChange} // Use the new handler
                     className="border border-gray-300 rounded-md px-2 py-1"
                   >
                     <option value={user.isConfirmed}>
