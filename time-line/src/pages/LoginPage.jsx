@@ -70,7 +70,7 @@ export default function LoginPage() {
       </div>
       <div className="mb-3">
         <a
-          href=""
+          href="/forgot-password"
           className={`text-blue-500 hover:underline ${
             isLoading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           }`}

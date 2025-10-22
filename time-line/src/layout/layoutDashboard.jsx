@@ -29,7 +29,7 @@ export default function LayoutDashboard() {
   return (
     <header className="w-full text-black py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
-        <h1 className="text-2xl font-bold"></h1>
+        <h1 className="w-48"></h1>
         <img className="w-48" src="/LOGO_ARGOMEDIA.png" alt="" />
         <div className="flex space-x-4 items-center">
           <span className="text-gray-700">{welcomeMessage}</span>

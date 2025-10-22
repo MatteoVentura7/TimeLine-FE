@@ -222,8 +222,8 @@ export default function DashboardPage() {
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 0}
-              className={`py-2 px-4 rounded-md ${
-                currentPage === 0 ? "bg-gray-300" : "bg-blue-500 text-white"
+              className={`py-1 px-3 rounded-full text-sm shadow-md transition-all duration-300 ${
+                currentPage === 0 ? "bg-gray-300" : "bg-blue-500 text-white hover:bg-blue-600"
               }`}
             >
               Previous
@@ -232,10 +232,10 @@ export default function DashboardPage() {
               <button
                 key={index}
                 onClick={() => handlePageClick(index)}
-                className={`py-2 px-4 rounded-md ${
+                className={`py-1 px-3 rounded-full text-sm shadow-md transition-all duration-300 ${
                   currentPage === index
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-300"
+                    ? "bg-blue-500 text-white hover:bg-blue-600"
+                    : "bg-gray-300 hover:bg-gray-400"
                 }`}
               >
                 {index + 1}
@@ -244,10 +244,10 @@ export default function DashboardPage() {
             <button
               onClick={handleNextPage}
               disabled={currentPage === totalPages - 1}
-              className={`py-2 px-4 rounded-md ${
+              className={`py-1 px-3 rounded-full text-sm shadow-md transition-all duration-300 ${
                 currentPage === totalPages - 1
                   ? "bg-gray-300"
-                  : "bg-blue-500 text-white"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
               }`}
             >
               Next
