@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useRegister from "../hooks/useRegister";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
+import { useEffect } from "react";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function RegisterPage() {
     confirmPasswordRef,
     roleRef, // Aggiunto per il riferimento del ruolo
     errorMessage,
+    setErrorMessage,
     passwordValidationMessage,
     handlePasswordChange,
     register,
@@ -19,10 +21,22 @@ export default function RegisterPage() {
     surnameRef, // Added for surname field
   } = useRegister();
 
+ 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     register();
   };
+
+    useEffect(() => {
+      if (errorMessage) {
+        const timer = setTimeout(() => {
+          setErrorMessage(null);
+        }, 5000);
+  
+        return () => clearTimeout(timer);
+      }
+    }, [errorMessage]);
 
   return (
     <div>
@@ -35,7 +49,7 @@ export default function RegisterPage() {
           <h1 className="text-2xl font-bold mb-6">Create New User</h1>
        
           {errorMessage && (
-            <div className="mb-4 p-4 text-red-800 bg-red-200 rounded-md">
+            <div className="mb-4  bg-red-100 text-red-700 rounded-md fixed bottom-10 right-10 w-fit p-3">
               {errorMessage}
             </div>
           )}

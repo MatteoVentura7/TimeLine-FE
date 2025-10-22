@@ -103,5 +103,6 @@ export default function useRegister() {
     roleRef, // Esporta il riferimento del ruolo
     nameRef, // Export name reference
     surnameRef, // Export surname reference
+    setErrorMessage
   };
 }

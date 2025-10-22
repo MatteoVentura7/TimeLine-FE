@@ -120,8 +120,8 @@ export default function DashboardPage() {
           <h2 className="text-xl font-semibold mb-4">User List</h2>
           {statusMessage && (
             <div
-              className={`fixed bottom-10 right-10 w-fit p-3  shadow-md text-white z-50 ${
-                statusMessage.type === "success" ? "bg-green-500" : "bg-red-500"
+              className={`fixed bottom-10 right-10 w-fit p-3  z-50 ${
+                statusMessage.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
               }`}
             >
               {statusMessage.text}
