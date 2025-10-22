@@ -70,7 +70,9 @@ export default function useRegister() {
         setErrorMessage("");
         setTimeout(() => {
           setIsLoading(false); // Reimposta lo stato di caricamento dopo il reindirizzamento
-          navigate("/dashboard");
+          navigate("/dashboard", {
+            state: { successMessage: "Registration successful!" },
+          });
         }, 1000);
       })
       .catch((error) => {

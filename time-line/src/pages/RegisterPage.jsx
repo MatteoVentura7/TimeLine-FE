@@ -10,7 +10,6 @@ export default function RegisterPage() {
     passwordRef,
     confirmPasswordRef,
     roleRef, // Aggiunto per il riferimento del ruolo
-    successMessage,
     errorMessage,
     passwordValidationMessage,
     handlePasswordChange,
@@ -34,11 +33,7 @@ export default function RegisterPage() {
               <main>
         <div className="max-w-md mx-auto mt-10">
           <h1 className="text-2xl font-bold mb-6">Create New User</h1>
-          {successMessage && (
-            <div className="mb-4 p-4 text-green-800 bg-green-200 rounded-md">
-              {successMessage}
-            </div>
-          )}
+       
           {errorMessage && (
             <div className="mb-4 p-4 text-red-800 bg-red-200 rounded-md">
               {errorMessage}
