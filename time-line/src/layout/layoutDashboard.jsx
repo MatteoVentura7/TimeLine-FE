@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,7 @@ export default function LayoutDashboard() {
     setWelcomeMessage(`Hello, ${capitalize(name)} ${capitalize(surname)}`);
   }, []);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -26,6 +27,19 @@ export default function LayoutDashboard() {
     navigate("/");
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="w-full text-black py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
@@ -33,10 +47,10 @@ export default function LayoutDashboard() {
         <img className="w-48" src="/LOGO_ARGOMEDIA.png" alt="" />
         <div className="flex space-x-4 items-center">
           <span className="text-gray-700">{welcomeMessage}</span>
-          <div className="relative">
-            <span onClick={toggleDropdown} className="cursor-pointer hover:text-gray-500 text-3xl">
-              <i class="fa-solid fa-circle-user"></i>
-            </span>
+          <div className="relative" ref={dropdownRef}>
+            <button onClick={toggleDropdown} className="cursor-pointer text-2xl focus:outline-none focus:ring-2 focus:ring-stone-700 bg-stone-500 text-white px-2 py-2 rounded-md shadow-md hover:bg-stone-600 hover:scale-105 transition-transform duration-200">
+              <i className="fa-solid fa-circle-user"></i>
+            </button>
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-md">
                 <ul>

@@ -44,12 +44,12 @@ export default function RegisterPage() {
             <Sidebar title="Create User" />
             <div className="flex-1 flex flex-col">
               <LayoutDashboard />
-              <main>
+              <main >
         <div className="max-w-md mx-auto mt-10">
           <h1 className="text-2xl font-bold mb-6">Create New User</h1>
        
           {errorMessage && (
-            <div className="mb-4  bg-red-100 text-red-700 rounded-md fixed bottom-10 right-10 w-fit p-3">
+            <div className="text-sm mb-4  bg-red-100 text-red-700 rounded-md fixed bottom-10 right-10 w-fit p-3">
               {errorMessage}
             </div>
           )}

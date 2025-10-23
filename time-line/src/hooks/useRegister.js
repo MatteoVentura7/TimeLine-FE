@@ -18,13 +18,13 @@ export default function useRegister() {
 
   const validatePassword = (password) => {
     if (password.length < 8) {
-      return "the password must be at least 8 characters long.";
+      return "The password must have at least eight characters."; 
     }
     if (!/[A-Z]/.test(password)) {
-      return "the password must contain at least one uppercase letter.";
+      return "The password must have at least one capital letter."; 
     }
     if (!/[0-9]/.test(password)) {
-      return "the password must contain at least one number.";
+      return "The password must have at least one number.";
     }
     return "";
   };
