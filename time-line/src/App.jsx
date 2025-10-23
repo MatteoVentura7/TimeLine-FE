@@ -1,5 +1,6 @@
-import LoginPage from "./pages/LoginPage";
+
 import { Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
@@ -7,11 +8,15 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage.jsx";
 import ConfirmEmailPage from "./pages/ConfirmEmailPage.jsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 import HomePage from "./pages/HomePage.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";   
 import UserDetailsPage from "./pages/UserDetailsPage.jsx";
 import EditProfilePage from "./pages/EditProfilePage.jsx";
+import ProtectedRouteAccess from "./components/ProtectedRouteAccess.jsx";
+
 
 export default function App() {
+
+
   return (
     <Routes>
       <Route path="/" element={<LoginPage />} />
@@ -40,10 +45,10 @@ export default function App() {
       <Route
         path="/profile"
         element={
-          <ProtectedRoute>
+          <ProtectedRouteAccess>
             {" "}
             <ProfilePage />{" "}
-          </ProtectedRoute>
+          </ProtectedRouteAccess>
         }
       />
       <Route
