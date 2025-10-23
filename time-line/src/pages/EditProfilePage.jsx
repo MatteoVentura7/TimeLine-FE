@@ -116,7 +116,7 @@ export default function EditProfilePage() {
   const handleCancelAndRedirect = async () => {
     setIsSaving(true);
     await handleCancelEdit();
-    navigate("/dashboard");
+    navigate(-1);
     setIsSaving(false);
   };
 
