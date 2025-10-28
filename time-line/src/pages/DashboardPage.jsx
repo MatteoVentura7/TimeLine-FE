@@ -63,17 +63,20 @@ export default function DashboardPage() {
     try {
       const success = await deleteUser(userId);
       if (success) {
-        // ricarico la pagina corrente dopo la cancellazione
+        // Ricarico la pagina corrente dopo la cancellazione
         setIsLoading(true);
         axios
           .get(
-            `http://localhost:3000/users?page=${
-              currentPage + 1
-            }&limit=${usersPerPage}`
+            `http://localhost:3000/users?page=${currentPage + 1}&limit=${usersPerPage}`
           )
           .then((response) => {
             setUsers(response.data.data);
             setTotalPages(response.data.totalPages);
+
+            // Controllo se la lista utenti è vuota e se ci sono pagine precedenti
+            if (response.data.data.length === 0 && currentPage > 0) {
+              setCurrentPage((prevPage) => prevPage - 1);
+            }
           })
           .finally(() => setIsLoading(false));
 
@@ -268,8 +271,8 @@ export default function DashboardPage() {
 
       {/* POPUP */}
       {popup.visible && (
-        <div className="absolute inset-0 flex items-center justify-center bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-md text-center">
+        <div className="absolute inset-0 flex items-center justify-center ">
+          <div className="bg-white p-6 rounded shadow-2xl text-center border-2 border-black ">
             <p className="mb-4">Are you sure you want to delete this user?</p>
             <div className="flex justify-center space-x-4">
               <button

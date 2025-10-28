@@ -48,7 +48,7 @@ export default function LayoutDashboard() {
         <div className="flex space-x-4 items-center">
           <span className="text-gray-700">{welcomeMessage}</span>
           <div className="relative" ref={dropdownRef}>
-            <button onClick={toggleDropdown} className="cursor-pointer text-2xl focus:outline-none focus:ring-2 focus:ring-stone-700 bg-stone-500 text-white px-2 py-2 rounded-md shadow-md hover:bg-stone-600 hover:scale-105 transition-transform duration-200">
+            <button onClick={toggleDropdown} className="cursor-pointer text-2xl focus:outline-none focus:ring-2 focus:ring-stone-700 bg-stone-500 text-white px-2 py-2 rounded-3xl shadow-md hover:bg-stone-600 ">
               <i className="fa-solid fa-circle-user"></i>
             </button>
             {isDropdownOpen && (

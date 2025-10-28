@@ -1,14 +1,44 @@
+import { useEffect, useState } from "react";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
 
 const ProfilePage = () => {
-  const name = localStorage.getItem("name") || "";
-  const surname = localStorage.getItem("surname") || "";
-  const email = localStorage.getItem("email") || "";
-  const role = localStorage.getItem("role") || "";
+  const [user, setUser] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    role: "",
+  });
 
   const capitalize = (str) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch("http://localhost:3000/users/user-info", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data);
+        } else {
+          console.error("Failed to fetch user info");
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
@@ -22,19 +52,21 @@ const ProfilePage = () => {
             </h2>
             <p className="mb-4">
               <strong>Name:</strong>{" "}
-              <span className="text-gray-700">{capitalize(name)}</span>
+              <span className="text-gray-700">{capitalize(user.name)}</span>
             </p>
             <p className="mb-4">
               <strong>Surname:</strong>{" "}
-              <span className="text-gray-700">{capitalize(surname)}</span>
+              <span className="text-gray-700">
+                {capitalize(user.surname)}
+              </span>
             </p>
             <p className="mb-4">
               <strong>Email:</strong>{" "}
-              <span className="text-gray-700">{email}</span>
+              <span className="text-gray-700">{user.email}</span>
             </p>
             <p className="mb-4">
               <strong>Role:</strong>{" "}
-              <span className="text-gray-700">{role}</span>
+              <span className="text-gray-700">{user.role}</span>
             </p>
           </div>
         </main>
