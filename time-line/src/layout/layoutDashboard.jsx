@@ -1,31 +1,38 @@
 import { useEffect, useState, useRef } from "react";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function LayoutDashboard() {
   const navigate = useNavigate();
 
-  const [welcomeMessage, setWelcomeMessage] = useState("");
-  useEffect(() => {
-    const name = localStorage.getItem("name") || "";
-    const surname = localStorage.getItem("surname") || "";
-
-    const capitalize = (str) =>
-      str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-
-    setWelcomeMessage(`Hello, ${capitalize(name)} ${capitalize(surname)}`);
-  }, []);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
-  const handleLogout = () => {
-    LogoutFunction();
-    navigate("/");
-  };
+    if (!token) {
+      setError("Nessun token trovato. Effettua il login.");
+      return;
+    }
+
+    axios
+      .get("http://localhost:3000/users/user-info", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.error("Errore nel recupero dati:", err);
+        setError(err.response?.data?.error || "Errore imprevisto");
+      });
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -40,15 +47,38 @@ export default function LayoutDashboard() {
     };
   }, []);
 
+  if (error) {
+    return <p>❌ {error}</p>;
+  }
+
+  if (!user) {
+    return <p>Caricamento...</p>;
+  }
+
+  const capitalize = (str) =>
+    str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleLogout = () => {
+    LogoutFunction();
+    navigate("/");
+  };
+
   return (
     <header className="w-full text-black py-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center px-4">
         <h1 className="w-48"></h1>
         <img className="w-48" src="/LOGO_ARGOMEDIA.png" alt="" />
         <div className="flex space-x-4 items-center">
-          <span className="text-gray-700">{welcomeMessage}</span>
+          <span className="text-gray-700">Welcome, {capitalize(user.name)} {capitalize(user.surname)}</span>
           <div className="relative" ref={dropdownRef}>
-            <button onClick={toggleDropdown} className="cursor-pointer text-2xl focus:outline-none focus:ring-2 focus:ring-stone-700 bg-stone-500 text-white px-2 py-2 rounded-3xl shadow-md hover:bg-stone-600 ">
+            <button
+              onClick={toggleDropdown}
+              className="cursor-pointer text-2xl focus:outline-none focus:ring-2 focus:ring-stone-700 bg-stone-500 text-white px-2 py-2 rounded-3xl shadow-md hover:bg-stone-600 "
+            >
               <i className="fa-solid fa-circle-user"></i>
             </button>
             {isDropdownOpen && (
