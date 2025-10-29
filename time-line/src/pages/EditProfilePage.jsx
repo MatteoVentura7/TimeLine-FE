@@ -177,7 +177,7 @@ export default function EditProfilePage() {
                       : ""
                   }`}
                 >
-                  {isSaving ? "Saving..." : "Save"}
+                  {isSaving ? "Save" : "Save"}
                 </button>
                 <button
                   onClick={handleSaveAndRedirect}
@@ -188,7 +188,7 @@ export default function EditProfilePage() {
                       : ""
                   }`}
                 >
-                  {isSaving ? "Saving..." : "Save and Back"}
+                  {isSaving ? "Save and Back" : "Save and Back"}
                 </button>
                 <button
                   onClick={handleCancelAndRedirect}

@@ -117,7 +117,7 @@ export default function UserDetailsPage() {
             </h2>
             {statusMessage && (
               <div
-                className={`p-4 rounded-md mb-4 ${
+                className={`fixed bottom-10 right-10 w-fit p-3  shadow-md  rounded-md mb-4 ${
                   statusMessage.type === "error"
                     ? "bg-red-100 text-red-700"
                     : "bg-green-100 text-green-700"
@@ -138,7 +138,7 @@ export default function UserDetailsPage() {
                         : ""
                     }`}
                   >
-                    {isSaving ? "Saving..." : "Save"}
+                    {isSaving ? "Save" : "Save"}
                   </button>
                   <button
                     onClick={handleCancelWithState}
@@ -337,7 +337,7 @@ export default function UserDetailsPage() {
                           isSaving ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       >
-                        {isSaving ? "Saving..." : "Save"}
+                        {isSaving ? "Save" : "Save"}
                       </button>
                       <button
                         onClick={closePasswordPopup}

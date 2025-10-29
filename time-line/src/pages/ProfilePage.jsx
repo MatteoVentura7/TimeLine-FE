@@ -31,8 +31,8 @@ const ProfilePage = () => {
       });
   }, []);
 
-  if (error) return <p>❌ {error}</p>;
-  if (!user) return <p>Caricamento...</p>;
+  if (error) return <p> {error}</p>;
+  if (!user) return <Sidebar title="Profile" />;
  
   return (
     <div className="min-h-screen bg-gray-100 relative flex">

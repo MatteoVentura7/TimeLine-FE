@@ -12,7 +12,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import UserDetailsPage from "./pages/UserDetailsPage.jsx";
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 import ProtectedRouteAccess from "./components/ProtectedRouteAccess.jsx";
-
+  
 
 export default function App() {
 
