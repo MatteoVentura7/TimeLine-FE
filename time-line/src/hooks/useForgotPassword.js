@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import axios from "axios";
+import backendService from "../service/backendService";
 
 export default function useForgotPassword() {
   const emailRef = useRef(null);
@@ -16,10 +16,7 @@ export default function useForgotPassword() {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:3000/users/reset-password",
-        { email }
-      );
+      const response = await backendService.ForgotPassword({ email });
       setMessage("Password reset link sent! Check your email.");
       return { success: true };
     } catch (error) {
