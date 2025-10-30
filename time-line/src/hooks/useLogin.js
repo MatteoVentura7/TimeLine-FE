@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import backendService from "../service/backendService";
 
 export default function useLogin() {
   const emailRef = useRef("");
@@ -17,8 +17,8 @@ export default function useLogin() {
 
     setIsLoading(true); // Imposta lo stato di caricamento
 
-    axios
-      .post("http://localhost:3000/users/login", {
+    backendService
+      .login({
         email: emailRef.current,
         password: passwordRef.current,
         role: roleRef.current, // Includi il ruolo nella richiesta
