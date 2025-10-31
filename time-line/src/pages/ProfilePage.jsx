@@ -1,10 +1,9 @@
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
-import axios from "axios";
+import backendService from "../service/backendService";
 import { useEffect, useState } from "react";
 
 const ProfilePage = () => {
-
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
@@ -16,12 +15,8 @@ const ProfilePage = () => {
       return;
     }
 
-    axios
-      .get("http://localhost:3000/users/user-info", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    backendService
+      .userInfo(token)
       .then((res) => {
         setUser(res.data);
       })
@@ -33,7 +28,7 @@ const ProfilePage = () => {
 
   if (error) return <p> {error}</p>;
   if (!user) return <Sidebar title="Profile" />;
- 
+
   return (
     <div className="min-h-screen bg-gray-100 relative flex">
       <Sidebar title="Profile" />
@@ -41,10 +36,22 @@ const ProfilePage = () => {
         <LayoutDashboard />
         <main className="p-10 bg-gray-50">
           <h1 className="text-2xl font-bold mb-6">My Profile</h1>
-          <p className="mb-3"><strong>Name : </strong>{user.name}</p>
-          <p className="mb-3"><strong>Surname : </strong>{user.surname}</p>
-          <p className="mb-3"><strong>Email : </strong>{user.email}</p>
-          <p className="mb-3"><strong>Role : </strong>{user.role}</p>
+          <p className="mb-3">
+            <strong>Name : </strong>
+            {user.name}
+          </p>
+          <p className="mb-3">
+            <strong>Surname : </strong>
+            {user.surname}
+          </p>
+          <p className="mb-3">
+            <strong>Email : </strong>
+            {user.email}
+          </p>
+          <p className="mb-3">
+            <strong>Role : </strong>
+            {user.role}
+          </p>
         </main>
       </div>
     </div>
@@ -52,6 +59,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-
-

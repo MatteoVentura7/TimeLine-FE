@@ -6,6 +6,8 @@ const ForgotPasswordUrl = `/reset-password`;
 const ResetPasswordUrl = `/verify-reset-token?token=`;
 const ConfirmEmailUrl = `/verify-email-token?token=`;
 const UptadeUserUrl = `/update-email/`;
+const changePasswordUrl = `/change-password/`;
+const UserInfoUrl = `/user-info`;
 
 class backendService {
   /************* LOGIN *************/
@@ -71,10 +73,20 @@ class backendService {
   /************* CHANGE PASSWORD *************/
 
   static changePassword({ userId, newPassword, confirmPassword }) {
-    return axios.put(`${BaseUrl}/change-password/${userId}`, {
+    return axios.put(`${BaseUrl}${changePasswordUrl}${userId}`, {
       newPassword,
       confirmPassword,
       id: userId,
+    });
+  }
+
+  /*************  USER INFO *************/
+
+  static userInfo(token) {
+    return axios.get(`${BaseUrl}${UserInfoUrl}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }
