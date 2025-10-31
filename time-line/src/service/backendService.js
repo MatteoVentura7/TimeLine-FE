@@ -36,6 +36,12 @@ class backendService {
   static confirmEmail(token) {
     return axios.get(`${BaseUrl}${ConfirmEmailUrl}${token}`);
   }
+
+  /************* DELETE USER *************/
+
+  static deleteUser(userId) {
+    return axios.delete(`${BaseUrl}/${userId}`);
+  }
 }
 
 export default backendService;

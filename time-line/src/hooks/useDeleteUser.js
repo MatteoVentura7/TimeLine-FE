@@ -1,4 +1,5 @@
 import { useState } from "react";
+import backendService from "../service/backendService";
 
 export const useDeleteUser = () => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -6,11 +7,7 @@ export const useDeleteUser = () => {
   const deleteUser = async (userId) => {
     setIsDeleting(true);
     try {
-      
-      const response = await fetch(`http://localhost:3000/users/${userId}`, {
-        method: "DELETE",
-      });
-      if (!response.ok) throw new Error("Errore nella cancellazione utente");
+      await backendService.deleteUser(userId);
       return true;
     } catch (error) {
       console.error("Errore:", error);
