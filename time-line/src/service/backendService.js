@@ -5,6 +5,7 @@ const LoginUrl = `/login`;
 const ForgotPasswordUrl = `/reset-password`;
 const ResetPasswordUrl = `/verify-reset-token?token=`;
 const ConfirmEmailUrl = `/verify-email-token?token=`;
+const UptadeUserUrl = `/update-email/`;
 
 class backendService {
   /************* LOGIN *************/
@@ -54,6 +55,20 @@ class backendService {
   static userDetails(userId) {
     return axios.get(`${BaseUrl}/${userId}`);
   }
+
+  /************* UPDATE USER *************/
+
+  static updateUser({ userId, email, isConfirmed, name, surname, role }) {
+    return axios.put(`${BaseUrl}${UptadeUserUrl}${userId}`, {
+      email,
+      isConfirmed,
+      name,
+      surname,
+      role,
+    });
+  }
+
+  /************* CHANGE PASSWORD *************/
 }
 
 export default backendService;

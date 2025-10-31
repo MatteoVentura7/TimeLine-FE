@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import backendService from "../service/backendService";
 
 const useEditProfile = (onProfileUpdate) => {
   const [editingUser, setEditingUser] = useState(null);
@@ -9,22 +10,26 @@ const useEditProfile = (onProfileUpdate) => {
   const [editedSurname, setEditedSurname] = useState("");
   const [editedRole, setEditedRole] = useState("");
   const [statusMessage, setStatusMessage] = useState(null);
-   const [passwordPopup, setPasswordPopup] = useState({
+  const [passwordPopup, setPasswordPopup] = useState({
     visible: false,
     userId: null,
   });
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  
-
-
 
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleEdit = (userId, currentEmail, currentIsConfirmed, currentName, currentSurname, currentRole) => {
+  const handleEdit = (
+    userId,
+    currentEmail,
+    currentIsConfirmed,
+    currentName,
+    currentSurname,
+    currentRole
+  ) => {
     setEditingUser(userId);
     setEditedEmail(currentEmail);
     setEditedIsConfirmed(currentIsConfirmed);
@@ -34,7 +39,8 @@ const useEditProfile = (onProfileUpdate) => {
   };
 
   const handleSave = async () => {
-    if (!editingUser) return { success: false, message: "No user is being edited." };
+    if (!editingUser)
+      return { success: false, message: "No user is being edited." };
 
     if (!validateEmail(editedEmail)) {
       setStatusMessage({ type: "error", text: "Insert a valid email." });
@@ -42,16 +48,14 @@ const useEditProfile = (onProfileUpdate) => {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:3000/users/update-email/${editingUser}`,
-        {
-          email: editedEmail,
-          isConfirmed: editedIsConfirmed,
-          name: editedName,
-          surname: editedSurname,
-          role: editedRole,
-        }
-      );
+      const response = await backendService.updateUser({
+        userId: editingUser,
+        email: editedEmail,
+        isConfirmed: editedIsConfirmed,
+        name: editedName,
+        surname: editedSurname,
+        role: editedRole,
+      });
       setStatusMessage({ type: "success", text: response.data.message });
       const updatedUser = {
         userId: editingUser,
@@ -102,7 +106,7 @@ const useEditProfile = (onProfileUpdate) => {
     }
   }, [statusMessage]);
 
-   /* Gestione della modifica della password */
+  /* Gestione della modifica della password */
   const handleChangePassword = (userId) => {
     setPasswordPopup({ visible: true, userId });
   };
