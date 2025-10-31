@@ -69,6 +69,14 @@ class backendService {
   }
 
   /************* CHANGE PASSWORD *************/
+
+  static changePassword({ userId, newPassword, confirmPassword }) {
+    return axios.put(`${BaseUrl}/change-password/${userId}`, {
+      newPassword,
+      confirmPassword,
+      id: userId,
+    });
+  }
 }
 
 export default backendService;

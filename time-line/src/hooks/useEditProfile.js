@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import backendService from "../service/backendService";
 
 const useEditProfile = (onProfileUpdate) => {
@@ -140,14 +139,11 @@ const useEditProfile = (onProfileUpdate) => {
     }
 
     try {
-      const response = await axios.put(
-        `http://localhost:3000/users/change-password/${userId}`,
-        {
-          newPassword,
-          confirmPassword,
-          id: userId,
-        }
-      );
+      const response = await backendService.changePassword({
+        userId,
+        newPassword,
+        confirmPassword,
+      });
       setStatusMessage({ type: "success", text: response.data.message });
       setPasswordPopup({ visible: false, userId: null });
       setNewPassword("");
