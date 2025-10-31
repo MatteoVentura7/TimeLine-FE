@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import backendService from "../service/backendService";
 
 export default function useRegister() {
   const emailRef = useRef("");
@@ -18,10 +19,10 @@ export default function useRegister() {
 
   const validatePassword = (password) => {
     if (password.length < 8) {
-      return "The password must have at least eight characters."; 
+      return "The password must have at least eight characters.";
     }
     if (!/[A-Z]/.test(password)) {
-      return "The password must have at least one capital letter."; 
+      return "The password must have at least one capital letter.";
     }
     if (!/[0-9]/.test(password)) {
       return "The password must have at least one number.";
@@ -60,8 +61,8 @@ export default function useRegister() {
       return;
     }
 
-    axios
-      .post("http://localhost:3000/users", { email, password, role , name, surname }) // Includi il ruolo nella richiesta
+    backendService
+      .register({ email, password, role, name, surname })
       .then((response) => {
         console.log("User created successfully:", response.data);
         setSuccessMessage(
@@ -103,6 +104,6 @@ export default function useRegister() {
     roleRef, // Esporta il riferimento del ruolo
     nameRef, // Export name reference
     surnameRef, // Export surname reference
-    setErrorMessage
+    setErrorMessage,
   };
 }

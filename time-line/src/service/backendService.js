@@ -42,6 +42,12 @@ class backendService {
   static deleteUser(userId) {
     return axios.delete(`${BaseUrl}/${userId}`);
   }
+
+  /************* REGISTER USER *************/
+
+  static register({ email, password, role, name, surname }) {
+    return axios.post(`${BaseUrl}`, { email, password, role, name, surname });
+  }
 }
 
 export default backendService;
