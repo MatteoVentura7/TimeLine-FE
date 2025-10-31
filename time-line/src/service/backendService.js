@@ -89,6 +89,18 @@ class backendService {
       },
     });
   }
+
+  /************* FETCH USERS *************/
+
+  static fetchUsers(page, limit) {
+    return axios.get(`${BaseUrl}?page=${page}&limit=${limit}`);
+  }
+
+  /************* RELOAD USERS *************/
+
+  static reloadUsers(page, limit) {
+    return axios.get(`${BaseUrl}?page=${page}&limit=${limit}`);
+  }
 }
 
 export default backendService;

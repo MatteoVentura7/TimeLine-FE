@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import backendService from "../service/backendService";
 
 export default function LayoutDashboard() {
   const navigate = useNavigate();
@@ -19,12 +19,8 @@ export default function LayoutDashboard() {
       return;
     }
 
-    axios
-      .get("http://localhost:3000/users/user-info", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    backendService
+      .userInfo(token)
       .then((res) => {
         setUser(res.data);
       })
@@ -51,24 +47,28 @@ export default function LayoutDashboard() {
     return <p> {error}</p>;
   }
 
- if (!user) {
-  return (
-    <header className="w-full text-black py-4 shadow-md h-31">
-      <div className="container mx-auto flex justify-between items-center px-4">
-        <h1 className="w-48"></h1>
-        <img className="w-48 invisible" src="/LOGO_ARGOMEDIA.png" alt="Logo" />
-        <div className="flex space-x-4 items-center">
-          <span className="text-gray-700 opacity-0">Welcome, Loading...</span>
-          <div className="relative">
-            <button className="cursor-pointer text-2xl bg-stone-500 text-white px-2 py-2 rounded-3xl shadow-md invisible">
-              <i className="fa-solid fa-circle-user"></i>
-            </button>
+  if (!user) {
+    return (
+      <header className="w-full text-black py-4 shadow-md h-31">
+        <div className="container mx-auto flex justify-between items-center px-4">
+          <h1 className="w-48"></h1>
+          <img
+            className="w-48 invisible"
+            src="/LOGO_ARGOMEDIA.png"
+            alt="Logo"
+          />
+          <div className="flex space-x-4 items-center">
+            <span className="text-gray-700 opacity-0">Welcome, Loading...</span>
+            <div className="relative">
+              <button className="cursor-pointer text-2xl bg-stone-500 text-white px-2 py-2 rounded-3xl shadow-md invisible">
+                <i className="fa-solid fa-circle-user"></i>
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-  );
-}
+      </header>
+    );
+  }
 
   const capitalize = (str) =>
     str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -88,7 +88,9 @@ export default function LayoutDashboard() {
         <h1 className="w-48"></h1>
         <img className="w-48" src="/LOGO_ARGOMEDIA.png" alt="" />
         <div className="flex space-x-4 items-center">
-          <span className="text-gray-700">Welcome, {capitalize(user.name)} {capitalize(user.surname)}</span>
+          <span className="text-gray-700">
+            Welcome, {capitalize(user.name)} {capitalize(user.surname)}
+          </span>
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={toggleDropdown}

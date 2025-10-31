@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
+import backendService from "../service/backendService";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -28,10 +28,8 @@ export default function DashboardPage() {
   // 🔹 Ottieni utenti dalla API con paginazione server-side
   useEffect(() => {
     setIsLoading(true); // inizio caricamento
-    axios
-      .get(
-        `http://localhost:3000/users?page=${currentPage + 1}&limit=${usersPerPage}`
-      )
+    backendService
+      .fetchUsers(currentPage + 1, usersPerPage)
       .then((response) => {
         setUsers(response.data.data); // riceve solo gli utenti della pagina corrente
         setTotalPages(response.data.totalPages);
@@ -65,10 +63,8 @@ export default function DashboardPage() {
       if (success) {
         // Ricarico la pagina corrente dopo la cancellazione
         setIsLoading(true);
-        axios
-          .get(
-            `http://localhost:3000/users?page=${currentPage + 1}&limit=${usersPerPage}`
-          )
+        backendService
+          .reloadUsers(currentPage + 1, usersPerPage)
           .then((response) => {
             setUsers(response.data.data);
             setTotalPages(response.data.totalPages);
@@ -88,7 +84,10 @@ export default function DashboardPage() {
         setStatusMessage({ type: "error", text: "Failed to delete user." });
       }
     } catch (error) {
-      setStatusMessage({ type: "error", text: "An unexpected error occurred." });
+      setStatusMessage({
+        type: "error",
+        text: "An unexpected error occurred.",
+      });
     }
     setPopup({ visible: false, userId: null });
   };
