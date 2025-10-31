@@ -2,7 +2,9 @@ import axios from "axios";
 
 const BaseUrl = `http://localhost:3000/users`;
 const LoginUrl = `/login`;
-const ResetPasswordUrl = `/reset-password`;
+const ForgotPasswordUrl = `/reset-password`;
+const ResetPasswordUrl = `/verify-reset-token?token=`;
+const ConfirmEmailUrl = `/verify-email-token?token=`;
 
 class backendService {
   /************* LOGIN *************/
@@ -20,13 +22,19 @@ class backendService {
   /************* FORGOT PASSWORD *************/
 
   static ForgotPassword({ email }) {
-    return axios.post(`${BaseUrl}${ResetPasswordUrl}`, { email });
+    return axios.post(`${BaseUrl}${ForgotPasswordUrl}`, { email });
   }
 
   /************* RESET PASSWORD *************/
 
   static verifyResetToken(token) {
-    return axios.get(`${BaseUrl}/verify-reset-token?token=${token}`);
+    return axios.get(`${BaseUrl}${ResetPasswordUrl}${token}`);
+  }
+
+  /************* CONFIRM EMAIL *************/
+
+  static confirmEmail(token) {
+    return axios.get(`${BaseUrl}${ConfirmEmailUrl}${token}`);
   }
 }
 
