@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import backendService from "../service/backendService";
 
 export function useResetPassword() {
   const [searchParams] = useSearchParams();
@@ -15,8 +16,8 @@ export function useResetPassword() {
 
   useEffect(() => {
     // Verifica il token
-    axios
-      .get(`http://localhost:3000/users/verify-reset-token?token=${token}`)
+    backendService
+      .verifyResetToken(token)
       .then(() => setTokenValid(true))
       .catch(() => setError("The request is no longer valid or has expired."));
   }, [token]);
