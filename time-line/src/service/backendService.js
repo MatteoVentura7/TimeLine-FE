@@ -48,6 +48,12 @@ class backendService {
   static register({ email, password, role, name, surname }) {
     return axios.post(`${BaseUrl}`, { email, password, role, name, surname });
   }
+
+  /************* DETAILS USER *************/
+
+  static userDetails(userId) {
+    return axios.get(`${BaseUrl}/${userId}`);
+  }
 }
 
 export default backendService;

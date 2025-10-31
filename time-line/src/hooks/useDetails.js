@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import backendService from "../service/backendService";
 
 export default function useDetails(userId) {
   const [user, setUser] = useState(null);
@@ -7,8 +8,8 @@ export default function useDetails(userId) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3000/users/${userId}`)
+    backendService
+      .userDetails(userId)
       .then((response) => {
         setUser(response.data);
         localStorage.setItem("id", response.data.id); // Salva l'ID utente
