@@ -320,7 +320,7 @@ export default function EditProfilePage() {
                   >
                     <option value="Admin">Admin</option>
                     <option value="User">User</option>
-                    <option value="Guest">Guest</option>
+                    
                   </select>
                 ) : (
                   user.role
