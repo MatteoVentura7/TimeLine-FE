@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export default function useLogin() {
   const emailRef = useRef("");
@@ -17,7 +17,7 @@ export default function useLogin() {
 
     setIsLoading(true); // Imposta lo stato di caricamento
 
-    backendService
+    BackendServiceInstance
       .login({
         email: emailRef.current,
         password: passwordRef.current,

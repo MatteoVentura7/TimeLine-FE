@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export default function useForgotPassword() {
   const emailRef = useRef(null);
@@ -16,7 +16,7 @@ export default function useForgotPassword() {
     }
 
     try {
-      const response = await backendService.ForgotPassword({ email });
+      const response = await BackendServiceInstance.ForgotPassword({ email });
       setMessage("Password reset link sent! Check your email.");
       return { success: true };
     } catch (error) {

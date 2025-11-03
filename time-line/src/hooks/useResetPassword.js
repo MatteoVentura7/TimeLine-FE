@@ -1,8 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import { useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export function useResetPassword() {
   const [searchParams] = useSearchParams();
@@ -16,7 +15,7 @@ export function useResetPassword() {
 
   useEffect(() => {
     // Verifica il token
-    backendService
+    BackendServiceInstance
       .verifyResetToken(token)
       .then(() => setTokenValid(true))
       .catch(() => setError("The request is no longer valid or has expired."));
@@ -32,11 +31,8 @@ export function useResetPassword() {
       return;
     }
 
-    axios
-      .put("http://localhost:3000/users/update-password", {
-        token,
-        newPassword,
-      })
+    BackendServiceInstance
+      .resetPassword(token, newPassword)
       .then((response) => {
         setMessage(response.data.message || "Password changed successfully");
         navigate("/"); // Redirect to login page

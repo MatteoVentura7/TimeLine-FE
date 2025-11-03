@@ -1,6 +1,7 @@
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
+
 import { useEffect, useState } from "react";
 
 const ProfilePage = () => {
@@ -15,7 +16,7 @@ const ProfilePage = () => {
       return;
     }
 
-    backendService
+    BackendServiceInstance
       .userInfo(token)
       .then((res) => {
         setUser(res.data);

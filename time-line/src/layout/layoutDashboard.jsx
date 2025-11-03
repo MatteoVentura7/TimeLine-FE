@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { LogoutFunction } from "../components/LogoutFunction";
 import { useNavigate } from "react-router-dom";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export default function LayoutDashboard() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function LayoutDashboard() {
       return;
     }
 
-    backendService
+    BackendServiceInstance
       .userInfo(token)
       .then((res) => {
         setUser(res.data);

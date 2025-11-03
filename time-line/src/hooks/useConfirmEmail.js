@@ -1,7 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export function useConfirmEmail() {
   const [message, setMessage] = useState("");
@@ -14,7 +13,7 @@ export function useConfirmEmail() {
 
   useEffect(() => {
     // Verifica il token
-    backendService
+    BackendServiceInstance
       .confirmEmail(token)
       .then(() => setTokenValid(true))
       .catch(() => setError("The request is no longer valid or has expired."));
@@ -28,8 +27,8 @@ export function useConfirmEmail() {
 
     console.log("Token being sent:", token); // Debug log for token
 
-    axios
-      .post("http://localhost:3000/users/confirm-email", { token })
+    BackendServiceInstance
+      .confirmEmailRequest(token)
       .then((response) => {
         console.log("Server response:", response.data); // Debug log for server response
         setMessage(

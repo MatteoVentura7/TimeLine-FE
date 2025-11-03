@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export default function useDetails(userId) {
   const [user, setUser] = useState(null);
@@ -8,7 +7,7 @@ export default function useDetails(userId) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    backendService
+    BackendServiceInstance
       .userDetails(userId)
       .then((response) => {
         setUser(response.data);

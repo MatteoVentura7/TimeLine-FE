@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDeleteUser } from "../hooks/useDeleteUser";
 import Sidebar from "../components/sidebar";
 import LayoutDashboard from "../layout/layoutDashboard";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
+
 
 export default function DashboardPage() {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export default function DashboardPage() {
   // 🔹 Ottieni utenti dalla API con paginazione server-side
   useEffect(() => {
     setIsLoading(true); // inizio caricamento
-    backendService
+    BackendServiceInstance
       .fetchUsers(currentPage + 1, usersPerPage)
       .then((response) => {
         setUsers(response.data.data); // riceve solo gli utenti della pagina corrente
@@ -63,7 +64,7 @@ export default function DashboardPage() {
       if (success) {
         // Ricarico la pagina corrente dopo la cancellazione
         setIsLoading(true);
-        backendService
+        backendServiceInstance
           .reloadUsers(currentPage + 1, usersPerPage)
           .then((response) => {
             setUsers(response.data.data);

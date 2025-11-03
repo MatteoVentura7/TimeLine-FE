@@ -1,19 +1,22 @@
 import axios from "axios";
 
-const BaseUrl = `http://localhost:3000/users`;
-const LoginUrl = `/login`;
-const ForgotPasswordUrl = `/reset-password`;
-const ResetPasswordUrl = `/verify-reset-token?token=`;
-const ConfirmEmailUrl = `/verify-email-token?token=`;
-const UptadeUserUrl = `/update-email/`;
-const changePasswordUrl = `/change-password/`;
-const UserInfoUrl = `/user-info`;
+class BackendService {
 
-class backendService {
+  static BaseUrl = `http://localhost:3000/users`;
+  static LoginUrl = `/login`;
+  static ForgotPasswordUrl = `/reset-password`;
+  static ResetPasswordUrl = `/verify-reset-token?token=`;
+  static ConfirmEmailUrl = `/verify-email-token?token=`;
+  static UptadeUserUrl = `/update-email/`;
+  static changePasswordUrl = `/change-password/`;
+  static UserInfoUrl = `/user-info`;
+  static confirmEmailRequestUrl = `/confirm-email`;
+  static updatePasswordUrl = `/update-password`;
+
   /************* LOGIN *************/
 
-  static login({ email, password, role, name, surname }) {
-    return axios.post(`${BaseUrl}${LoginUrl}`, {
+  login({ email, password, role, name, surname }) {
+    return axios.post(`${BackendService.BaseUrl}${BackendService.LoginUrl}`, {
       email,
       password,
       role,
@@ -24,44 +27,51 @@ class backendService {
 
   /************* FORGOT PASSWORD *************/
 
-  static ForgotPassword({ email }) {
-    return axios.post(`${BaseUrl}${ForgotPasswordUrl}`, { email });
+  ForgotPassword({ email }) {
+    return axios.post(`${BackendService.BaseUrl}${BackendService.ForgotPasswordUrl}`, { email });
   }
 
   /************* RESET PASSWORD *************/
 
-  static verifyResetToken(token) {
-    return axios.get(`${BaseUrl}${ResetPasswordUrl}${token}`);
+  verifyResetToken(token) {
+    return axios.get(`${BackendService.BaseUrl}${BackendService.ResetPasswordUrl}${token}`);
   }
 
+  resetPassword(token, newPassword) {
+    return axios.put(`${BackendService.BaseUrl}${BackendService.updatePasswordUrl}`, { token, newPassword });
+  }
   /************* CONFIRM EMAIL *************/
 
-  static confirmEmail(token) {
-    return axios.get(`${BaseUrl}${ConfirmEmailUrl}${token}`);
+  confirmEmail(token) {
+    return axios.get(`${BackendService.BaseUrl}${BackendService.ConfirmEmailUrl}${token}`);
+  }
+
+  confirmEmailRequest(token) {
+    return axios.post(`${BackendService.BaseUrl}${BackendService.confirmEmailRequestUrl}`, { token });
   }
 
   /************* DELETE USER *************/
 
-  static deleteUser(userId) {
-    return axios.delete(`${BaseUrl}/${userId}`);
+  deleteUser(userId) {
+    return axios.delete(`${BackendService.BaseUrl}/${userId}`);
   }
 
   /************* REGISTER USER *************/
 
-  static register({ email, password, role, name, surname }) {
-    return axios.post(`${BaseUrl}`, { email, password, role, name, surname });
+  register({ email, password, role, name, surname }) {
+    return axios.post(`${BackendService.BaseUrl}`, { email, password, role, name, surname });
   }
 
   /************* DETAILS USER *************/
 
-  static userDetails(userId) {
-    return axios.get(`${BaseUrl}/${userId}`);
+  userDetails(userId) {
+    return axios.get(`${BackendService.BaseUrl}/${userId}`);
   }
 
   /************* UPDATE USER *************/
 
-  static updateUser({ userId, email, isConfirmed, name, surname, role }) {
-    return axios.put(`${BaseUrl}${UptadeUserUrl}${userId}`, {
+  updateUser({ userId, email, isConfirmed, name, surname, role }) {
+    return axios.put(`${BackendService.BaseUrl}${BackendService.UptadeUserUrl}${userId}`, {
       email,
       isConfirmed,
       name,
@@ -72,8 +82,8 @@ class backendService {
 
   /************* CHANGE PASSWORD *************/
 
-  static changePassword({ userId, newPassword, confirmPassword }) {
-    return axios.put(`${BaseUrl}${changePasswordUrl}${userId}`, {
+  changePassword({ userId, newPassword, confirmPassword }) {
+    return axios.put(`${BackendService.BaseUrl}${BackendService.changePasswordUrl}${userId}`, {
       newPassword,
       confirmPassword,
       id: userId,
@@ -82,8 +92,8 @@ class backendService {
 
   /*************  USER INFO *************/
 
-  static userInfo(token) {
-    return axios.get(`${BaseUrl}${UserInfoUrl}`, {
+  userInfo(token) {
+    return axios.get(`${BackendService.BaseUrl}${BackendService.UserInfoUrl}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -92,15 +102,16 @@ class backendService {
 
   /************* FETCH USERS *************/
 
-  static fetchUsers(page, limit) {
-    return axios.get(`${BaseUrl}?page=${page}&limit=${limit}`);
+  fetchUsers(page, limit) {
+    return axios.get(`${BackendService.BaseUrl}?page=${page}&limit=${limit}`);
   }
 
   /************* RELOAD USERS *************/
 
-  static reloadUsers(page, limit) {
-    return axios.get(`${BaseUrl}?page=${page}&limit=${limit}`);
+  reloadUsers(page, limit) {
+    return axios.get(`${BackendService.BaseUrl}?page=${page}&limit=${limit}`);
   }
 }
 
-export default backendService;
+const BackendServiceInstance = new BackendService();
+export default BackendServiceInstance;

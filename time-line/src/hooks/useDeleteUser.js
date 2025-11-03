@@ -1,5 +1,5 @@
 import { useState } from "react";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export const useDeleteUser = () => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -7,7 +7,7 @@ export const useDeleteUser = () => {
   const deleteUser = async (userId) => {
     setIsDeleting(true);
     try {
-      await backendService.deleteUser(userId);
+      await BackendServiceInstance.deleteUser(userId);
       return true;
     } catch (error) {
       console.error("Errore:", error);

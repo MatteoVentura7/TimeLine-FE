@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 const useEditProfile = (onProfileUpdate) => {
   const [editingUser, setEditingUser] = useState(null);
@@ -47,7 +47,7 @@ const useEditProfile = (onProfileUpdate) => {
     }
 
     try {
-      const response = await backendService.updateUser({
+      const response = await BackendServiceInstance.updateUser({
         userId: editingUser,
         email: editedEmail,
         isConfirmed: editedIsConfirmed,
@@ -139,7 +139,7 @@ const useEditProfile = (onProfileUpdate) => {
     }
 
     try {
-      const response = await backendService.changePassword({
+      const response = await BackendServiceInstance.changePassword({
         userId,
         newPassword,
         confirmPassword,

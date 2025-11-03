@@ -1,7 +1,6 @@
 import { useRef, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import backendService from "../service/backendService";
+import BackendServiceInstance from "../service/BackendService";
 
 export default function useRegister() {
   const emailRef = useRef("");
@@ -61,7 +60,7 @@ export default function useRegister() {
       return;
     }
 
-    backendService
+    BackendServiceInstance
       .register({ email, password, role, name, surname })
       .then((response) => {
         console.log("User created successfully:", response.data);
